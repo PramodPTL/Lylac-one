@@ -6,6 +6,120 @@ import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const createPaymentDetails = () => ({
+  paymentType: "",
+  cardNumber: "",
+  cardHolderName: "",
+  expiryDate: "",
+  cvv: "",
+  paypalEmail: "",
+  cryptoTransactionId: "User didn't enter transaction ID",
+});
+
+const AddressFields = ({ formData, onChangeHandler, prefix = "" }) => {
+  const firstNameKey = prefix ? `${prefix}FirstName` : "firstName";
+  const lastNameKey = prefix ? `${prefix}LastName` : "lastName";
+  const emailKey = prefix ? `${prefix}Email` : "email";
+  const streetKey = prefix ? `${prefix}Street` : "street";
+  const cityKey = prefix ? `${prefix}City` : "city";
+  const stateKey = prefix ? `${prefix}State` : "state";
+  const zipcodeKey = prefix ? `${prefix}Zipcode` : "zipcode";
+  const countryKey = prefix ? `${prefix}Country` : "country";
+  const phoneKey = prefix ? `${prefix}Phone` : "phone";
+
+  return (
+    <>
+      <div className="flex gap-3">
+        <input
+          required
+          onChange={onChangeHandler}
+          name={firstNameKey}
+          value={formData[firstNameKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="text"
+          placeholder="First name"
+        />
+        <input
+          required
+          onChange={onChangeHandler}
+          name={lastNameKey}
+          value={formData[lastNameKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="text"
+          placeholder="Last name"
+        />
+      </div>
+      <input
+        required
+        onChange={onChangeHandler}
+        name={emailKey}
+        value={formData[emailKey] || ""}
+        className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+        type="email"
+        placeholder="E-mail Address"
+      />
+      <input
+        required
+        onChange={onChangeHandler}
+        name={streetKey}
+        value={formData[streetKey] || ""}
+        className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+        type="text"
+        placeholder="Street"
+      />
+      <div className="flex gap-3">
+        <input
+          required
+          onChange={onChangeHandler}
+          name={cityKey}
+          value={formData[cityKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="text"
+          placeholder="City"
+        />
+        <input
+          required
+          onChange={onChangeHandler}
+          name={stateKey}
+          value={formData[stateKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="text"
+          placeholder="State"
+        />
+      </div>
+      <div className="flex gap-3">
+        <input
+          required
+          onChange={onChangeHandler}
+          name={zipcodeKey}
+          value={formData[zipcodeKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="number"
+          placeholder="Area PIN-CODE"
+        />
+        <input
+          required
+          onChange={onChangeHandler}
+          name={countryKey}
+          value={formData[countryKey] || ""}
+          className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+          type="text"
+          placeholder="Country"
+        />
+      </div>
+      <input
+        required
+        onChange={onChangeHandler}
+        name={phoneKey}
+        value={formData[phoneKey] || ""}
+        className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
+        type="number"
+        placeholder="Mobile Number"
+      />
+    </>
+  );
+};
+
 const PlaceOrder = () => {
   const [method, setMethod] = useState("manual");
   const [savedAddresses, setSavedAddresses] = useState([]);
@@ -43,15 +157,7 @@ const PlaceOrder = () => {
     billingZipcode: "",
     billingCountry: "",
     billingPhone: "",
-    manualPaymentDetails: {
-      paymentType: "",
-      cardNumber: "",
-      cardHolderName: "",
-      expiryDate: "",
-      cvv: "",
-      paypalEmail: "",
-      cryptoTransactionId: "User didn't enter transaction ID",
-    },
+    manualPaymentDetails: createPaymentDetails(),
   });
   const [couponCode, setCouponCode] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(0);
@@ -120,15 +226,17 @@ const PlaceOrder = () => {
       const { data } = await axios.post(
         `${backendUrl}/api/address/save`,
         {
-          address: {firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          street: formData.street,
-          city: formData.city,
-          state: formData.state,
-          zipcode: formData.zipcode,
-          country: formData.country,
-          phone: formData.phone},
+          address: {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            street: formData.street,
+            city: formData.city,
+            state: formData.state,
+            zipcode: formData.zipcode,
+            country: formData.country,
+            phone: formData.phone
+          },
           userId: token, // Add userId to the request body
         },
         {
@@ -151,15 +259,14 @@ const PlaceOrder = () => {
   };
 
   const onChangeHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { name, value } = event.target;
     setFormData((data) => ({ ...data, [name]: value }));
   };
 
   const handleSameAsDeliveryChange = (e) => {
     const isChecked = e.target.checked;
     setSameAsDelivery(isChecked);
-    
+
     if (isChecked) {
       // If checked, copy delivery address to billing address
       if (showAddressForm) {
@@ -237,7 +344,7 @@ const PlaceOrder = () => {
     setSelectedCrypto(cryptoType);
     setSelectedNetwork("");
     setSelectedWallet(null);
-    
+
     setFormData((prev) => ({
       ...prev,
       manualPaymentDetails: {
@@ -250,16 +357,16 @@ const PlaceOrder = () => {
 
   const handleNetworkChange = (network) => {
     setSelectedNetwork(network);
-    
+
     const wallet = availableCryptos.find(
       w => w.cryptoType === selectedCrypto && w.network === network
     );
-    
+
     setSelectedWallet(wallet || null);
     if (wallet) {
       setCryptoWalletAddress(wallet.walletAddress);
     }
-    
+
     setFormData((prev) => ({
       ...prev,
       manualPaymentDetails: {
@@ -272,7 +379,7 @@ const PlaceOrder = () => {
   const handleMethodChange = (newMethod, paymentType = "") => {
     if (newMethod !== "stripe") {
       setMethod(newMethod);
-      
+
       if (newMethod !== "manual" || paymentType !== "crypto") {
         setSelectedCrypto("");
         setSelectedNetwork("");
@@ -370,19 +477,19 @@ const PlaceOrder = () => {
       };
 
       // Use delivery address as billing if checkbox is checked
-      let billingAddress = sameAsDelivery 
-        ? (showAddressForm ? address : selectedAddress) 
+      let billingAddress = sameAsDelivery
+        ? (showAddressForm ? address : selectedAddress)
         : {
-            firstName: formData.billingFirstName,
-            lastName: formData.billingLastName,
-            email: formData.billingEmail,
-            street: formData.billingStreet,
-            city: formData.billingCity,
-            state: formData.billingState,
-            zipcode: formData.billingZipcode,
-            country: formData.billingCountry,
-            phone: formData.billingPhone,
-          };
+          firstName: formData.billingFirstName,
+          lastName: formData.billingLastName,
+          email: formData.billingEmail,
+          street: formData.billingStreet,
+          city: formData.billingCity,
+          state: formData.billingState,
+          zipcode: formData.billingZipcode,
+          country: formData.billingCountry,
+          phone: formData.billingPhone,
+        };
 
       // Calculate final amount correctly
       const subtotal = getCartAmount();
@@ -456,15 +563,15 @@ const PlaceOrder = () => {
 
           if (response.data.success) {
             setCartItem({});
-            toast("Order placed successfully. One of our representative will get in touch with you in 24 hours Via call or email",{
+            toast("Order placed successfully. One of our representative will get in touch with you in 24 hours Via call or email", {
               type: "success",
               autoClose: 5000
             })
             navigate("/orders");
-            toast("Now you will be Redirected to Product Page",{
-              type:"info"
+            toast("Now you will be Redirected to Product Page", {
+              type: "info"
             })
-            setTimeout(()=>{
+            setTimeout(() => {
               navigate("/products")
             }, 3000)
           } else {
@@ -537,11 +644,10 @@ const PlaceOrder = () => {
                   <div
                     key={index}
                     onClick={() => setSelectedAddress(address)}
-                    className={`border p-3 rounded cursor-pointer ${
-                      selectedAddress === address
+                    className={`border p-3 rounded cursor-pointer ${selectedAddress === address
                         ? "border-green-500"
                         : "border-gray-300 dark:border-gray-600"
-                    } dark:text-gray-200 dark:bg-gray-700`}
+                      } dark:text-gray-200 dark:bg-gray-700`}
                   >
                     <p>
                       {address.firstName} {address.lastName}
@@ -570,92 +676,9 @@ const PlaceOrder = () => {
             {/* Address Form */}
             {showAddressForm && (
               <>
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="firstName"
-                    value={formData.firstName}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="First name"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="lastName"
-                    value={formData.lastName}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="Last name"
-                  />
-                </div>
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="email"
-                  value={formData.email}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="email"
-                  placeholder="E-mail Address"
-                />
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="street"
-                  value={formData.street}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="text"
-                  placeholder="Street"
-                />
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="city"
-                    value={formData.city}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="City"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="state"
-                    value={formData.state}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="State"
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="zipcode"
-                    value={formData.zipcode}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="number"
-                    placeholder="Area PIN-CODE"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="country"
-                    value={formData.country}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="Country"
-                  />
-                </div>
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="phone"
-                  value={formData.phone}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="number"
-                  placeholder="Mobile Number"
+                <AddressFields
+                  formData={formData}
+                  onChangeHandler={onChangeHandler}
                 />
                 <button
                   type="button"
@@ -692,92 +715,10 @@ const PlaceOrder = () => {
                 <div className="text-xl sm:text-2xl my-3">
                   <Title text1={"BILLING"} text2={"INFORMATION"} />
                 </div>
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingFirstName"
-                    value={formData.billingFirstName}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="First name"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingLastName"
-                    value={formData.billingLastName}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="Last name"
-                  />
-                </div>
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="billingEmail"
-                  value={formData.billingEmail}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="email"
-                  placeholder="E-mail Address"
-                />
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="billingStreet"
-                  value={formData.billingStreet}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="text"
-                  placeholder="Street"
-                />
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingCity"
-                    value={formData.billingCity}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="City"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingState"
-                    value={formData.billingState}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="State"
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingZipcode"
-                    value={formData.billingZipcode}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="number"
-                    placeholder="Area PIN-CODE"
-                  />
-                  <input
-                    required
-                    onChange={onChangeHandler}
-                    name="billingCountry"
-                    value={formData.billingCountry}
-                    className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                    type="text"
-                    placeholder="Country"
-                  />
-                </div>
-                <input
-                  required
-                  onChange={onChangeHandler}
-                  name="billingPhone"
-                  value={formData.billingPhone}
-                  className="border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded py-1.5 px-3.5 w-full"
-                  type="number"
-                  placeholder="Mobile Number"
+                <AddressFields
+                  formData={formData}
+                  onChangeHandler={onChangeHandler}
+                  prefix="billing"
                 />
               </div>
             )}
@@ -799,12 +740,11 @@ const PlaceOrder = () => {
               className="flex items-center gap-3 border dark:border-gray-600 p-2 px-3 cursor-pointer hover:border-green-500 dark:hover:border-green-500 transition-colors dark:bg-gray-700"
             >
               <p
-                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${
-                  method === "manual" &&
-                  formData.manualPaymentDetails.paymentType === "paypal"
+                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${method === "manual" &&
+                    formData.manualPaymentDetails.paymentType === "paypal"
                     ? "bg-green-500"
                     : ""
-                }`}
+                  }`}
               ></p>
               <p className="dark:text-gray-200">PayPal</p>
             </div>
@@ -815,14 +755,13 @@ const PlaceOrder = () => {
               className="flex items-center gap-3 border dark:border-gray-600 p-2 px-3 cursor-pointer hover:border-green-500 dark:hover:border-green-500 transition-colors dark:bg-gray-700"
             >
               <p
-                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${
-                  method === "manual" &&
-                  ["credit_card", "debit_card"].includes(
-                    formData.manualPaymentDetails.paymentType
-                  )
+                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${method === "manual" &&
+                    ["credit_card", "debit_card"].includes(
+                      formData.manualPaymentDetails.paymentType
+                    )
                     ? "bg-green-500"
                     : ""
-                }`}
+                  }`}
               ></p>
               <p className="dark:text-gray-200">Credit/Debit Card</p>
             </div>
@@ -833,27 +772,25 @@ const PlaceOrder = () => {
               className="flex items-center gap-3 border dark:border-gray-600 p-2 px-3 cursor-pointer hover:border-green-500 dark:hover:border-green-500 transition-colors dark:bg-gray-700"
             >
               <p
-                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${
-                  method === "manual" &&
-                  formData.manualPaymentDetails.paymentType === "crypto"
+                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${method === "manual" &&
+                    formData.manualPaymentDetails.paymentType === "crypto"
                     ? "bg-green-500"
                     : ""
-                }`}
+                  }`}
               ></p>
               <p className="dark:text-gray-200">Crypto</p>
             </div>
 
             {/* Western Union payment */}
-            <div 
-            onClick={() => handleMethodChange("manual", "western_union")}
-            className="flex items-center gap-3 border dark:border-gray-600 p-2 px-3 cursor-pointer hover:border-green-500 dark:hover:border-green-500 transition-colors dark:bg-gray-700">
-            <p
-                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${
-                  method === "manual" &&
-                  formData.manualPaymentDetails.paymentType === "western_union"
+            <div
+              onClick={() => handleMethodChange("manual", "western_union")}
+              className="flex items-center gap-3 border dark:border-gray-600 p-2 px-3 cursor-pointer hover:border-green-500 dark:hover:border-green-500 transition-colors dark:bg-gray-700">
+              <p
+                className={`min-w-3.5 h-3.5 border dark:border-gray-500 rounded-full ${method === "manual" &&
+                    formData.manualPaymentDetails.paymentType === "western_union"
                     ? "bg-green-500"
                     : ""
-                }`}
+                  }`}
               ></p>
               <p className="dark:text-gray-200">Western Union</p>
               <img
@@ -1049,7 +986,7 @@ const PlaceOrder = () => {
                       ))}
                     </select>
                   </div>
-                  
+
                   {selectedCrypto && (
                     <div>
                       <label className="block text-sm font-medium mb-2 dark:text-gray-300">
@@ -1072,42 +1009,42 @@ const PlaceOrder = () => {
                       </select>
                     </div>
                   )}
-                  
+
                   {selectedWallet && (
-                  <div>
-                    <label className="block text-sm font-medium mb-2 dark:text-gray-300">
-                      Send payment to this wallet address:
-                    </label>
-                    <div className="flex items-center">
-                      <input
-                        type="text"
+                    <div>
+                      <label className="block text-sm font-medium mb-2 dark:text-gray-300">
+                        Send payment to this wallet address:
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="text"
                           value={selectedWallet.walletAddress}
-                        readOnly
-                        className="w-full border dark:border-gray-600 rounded py-2 px-3 dark:bg-gray-800 dark:text-white"
-                      />
-                      <button
-                        type="button"
+                          readOnly
+                          className="w-full border dark:border-gray-600 rounded py-2 px-3 dark:bg-gray-800 dark:text-white"
+                        />
+                        <button
+                          type="button"
                           onClick={() => copyWalletAddress(selectedWallet.walletAddress)}
-                        className="bg-gray-200 dark:bg-gray-600 px-4 py-2 ml-2 rounded"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                      
+                          className="bg-gray-200 dark:bg-gray-600 px-4 py-2 ml-2 rounded"
+                        >
+                          Copy
+                        </button>
+                      </div>
+
                       <div className="mt-4 flex justify-center">
-                        <img 
-                          src={selectedWallet.qrCodeImage} 
-                          alt={`${selectedCrypto} ${selectedNetwork} QR Code`} 
+                        <img
+                          src={selectedWallet.qrCodeImage}
+                          alt={`${selectedCrypto} ${selectedNetwork} QR Code`}
                           className="w-48 h-48 object-contain border dark:border-gray-600 p-2"
                         />
                       </div>
-                      
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                         After sending payment, you can optionally enter your transaction ID below
-                    </p>
-                  </div>
+                      </p>
+                    </div>
                   )}
-                  
+
                   <div>
                     <label className="block text-sm font-medium mb-2 dark:text-gray-300">
                       Your Transaction ID (Optional)
@@ -1168,7 +1105,7 @@ const PlaceOrder = () => {
             </div>
             {couponError && <p className="text-red-500 text-sm mt-1">{couponError}</p>}
             {couponSuccess && <p className="text-green-500 text-sm mt-1">{couponSuccess}</p>}
-            
+
             {couponDiscount > 0 && (
               <div className="mt-2 p-2 bg-green-50 dark:bg-green-900 dark:text-green-100 text-green-700 rounded">
                 <p>Discount applied: {currency} {couponDiscount.toFixed(2)}</p>

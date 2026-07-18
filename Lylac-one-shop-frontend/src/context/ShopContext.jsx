@@ -6,13 +6,72 @@ import PropTypes from 'prop-types';
 
 export const ShopContext = createContext();
 
+const PRODUCT_LIST_ENDPOINT = "/api/product/user/list";
+const CART_ADD_ENDPOINT = "/api/cart/add";
+const CART_UPDATE_ENDPOINT = "/api/cart/update";
+const CART_GET_ENDPOINT = "/api/cart/get";
+const PRODUCT_DETAILS_ENDPOINT = "/api/product";
+
+// Creates the default cart shape used by the app.
+const getDefaultCartItem = (quantity = 1) => ({
+    quantity,
+    selectedPrice: null,
+    isPackage: false
+});
+
+// Normalizes cart data so both legacy and newer formats are handled consistently.
+const normalizeCartData = (cartData = {}) => {
+    const normalizedCartData = { ...cartData };
+
+    Object.entries(normalizedCartData).forEach(([itemId, item]) => {
+        if (item === null || item === undefined) {
+            delete normalizedCartData[itemId];
+            return;
+        }
+
+        if (typeof item === "number") {
+            normalizedCartData[itemId] = getDefaultCartItem(item);
+            return;
+        }
+
+        if (typeof item === "object") {
+            normalizedCartData[itemId] = {
+                ...getDefaultCartItem(),
+                ...item,
+                quantity: item.quantity ?? 1,
+                selectedPrice: item.selectedPrice ?? null,
+                isPackage: item.isPackage ?? false
+            };
+        }
+    });
+
+    return normalizedCartData;
+};
+
+// Applies the standard product list response format to shared state.
+const updateProductsFromResponse = (responseData, setProductsState, setProductsPaginationState) => {
+    if (!responseData?.success) {
+        toast.error(responseData?.message);
+        return false;
+    }
+
+    setProductsState(responseData.products);
+    setProductsPaginationState({
+        total: responseData.pagination.total,
+        pages: responseData.pagination.pages,
+        currentPage: responseData.pagination.currentPage,
+        limit: responseData.pagination.limit
+    });
+    return true;
+};
+
 const ShopContextProvider = (props) => {
-    
+
     const currency = '$';
     const delivery_fee = 35;
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [search, setSearch] = useState('');
-    const [showSearch, setShowSearch]= useState(false);
+    const [showSearch, setShowSearch] = useState(false);
     const [cartItems, setCartItem] = useState({});
     const [featuredProducts, setFeaturedProducts] = useState([]);
     const [products, setProducts] = useState([]);
@@ -40,43 +99,32 @@ const ShopContextProvider = (props) => {
             ...filters,
             ...newFilters
         };
-        
+
         // Update the filters state
         setFilters(updatedFilters);
-        
+
         // Reset to page 1 when filters change
         setProductsPagination(prev => ({
             ...prev,
             currentPage: 1
         }));
-        
+
         // Force a data fetch right away instead of relying on the useEffect
         fetchProductsWithCurrentFilters(updatedFilters);
     };
-    
+
     // A helper function to immediately fetch with the given filters
     const fetchProductsWithCurrentFilters = async (currentFilters) => {
         try {
-            setLoading(true);            
-            // Use the new user-specific endpoint
-            const response = await axios.post(backendUrl + '/api/product/user/list', {
-                page: 1, // Always start at page 1 for a new filter set
+            setLoading(true);
+            const response = await axios.post(`${backendUrl}${PRODUCT_LIST_ENDPOINT}`, {
+                page: 1,
                 limit: productsPagination.limit,
                 ...currentFilters,
-                search: currentFilters.search || search // Use either direct search or from filters
+                search: currentFilters.search || search
             });
-            
-            if (response.data.success) {
-                setProducts(response.data.products);
-                setProductsPagination({
-                    total: response.data.pagination.total,
-                    pages: response.data.pagination.pages,
-                    currentPage: response.data.pagination.currentPage,
-                    limit: response.data.pagination.limit
-                });
-            } else {
-                toast.error(response.data.message);
-            }
+
+            updateProductsFromResponse(response.data, setProducts, setProductsPagination);
         } catch (error) {
             console.error("Error fetching products:", error);
             toast.error(error.message);
@@ -88,42 +136,30 @@ const ShopContextProvider = (props) => {
     // Function to set page for pagination
     const setPage = (page) => {
         if (page < 1 || page > productsPagination.pages) return;
-        
+
         const newPage = parseInt(page);
-        
+
         setProductsPagination(prev => ({
             ...prev,
             currentPage: newPage
         }));
-        
+
         // Fetch the data for the new page
         fetchProductsForPage(newPage);
     };
-    
+
     // Helper function to fetch products for a specific page
     const fetchProductsForPage = async (page) => {
         try {
             setLoading(true);
-            
-            // Use the new user-specific endpoint
-            const response = await axios.post(backendUrl + '/api/product/user/list', {
-                page: page,
+            const response = await axios.post(`${backendUrl}${PRODUCT_LIST_ENDPOINT}`, {
+                page,
                 limit: productsPagination.limit,
                 ...filters,
-                search: filters.search || search // Use either direct search or from filters
+                search: filters.search || search
             });
-            
-            if (response.data.success) {
-                setProducts(response.data.products);
-                setProductsPagination({
-                    total: response.data.pagination.total,
-                    pages: response.data.pagination.pages,
-                    currentPage: response.data.pagination.currentPage,
-                    limit: response.data.pagination.limit
-                });
-            } else {
-                toast.error(response.data.message);
-            }
+
+            updateProductsFromResponse(response.data, setProducts, setProductsPagination);
         } catch (error) {
             console.error("Error fetching products:", error);
             toast.error(error.message);
@@ -134,11 +170,7 @@ const ShopContextProvider = (props) => {
 
     const addToCart = async (itemId, itemData) => {
         // Convert old format to new format if needed
-        const cartData = typeof itemData === 'number' ? {
-            quantity: itemData,
-            selectedPrice: null,
-            isPackage: false
-        } : itemData;
+        const cartData = typeof itemData === 'number' ? getDefaultCartItem(itemData) : itemData;
 
         // Validate cart data
         if (!cartData || typeof cartData !== 'object') {
@@ -173,12 +205,12 @@ const ShopContextProvider = (props) => {
             setCartItem(newCartItems);
             toast.success('Item Added to Cart');
 
-            if(token){
-                await axios.post(backendUrl + '/api/cart/add', {
-                    itemId, 
+            if (token) {
+                await axios.post(`${backendUrl}${CART_ADD_ENDPOINT}`, {
+                    itemId,
                     cartData
                 }, {
-                    headers: {token}
+                    headers: { token }
                 });
             }
         } catch (error) {
@@ -191,7 +223,7 @@ const ShopContextProvider = (props) => {
         let totalCount = 0;
         Object.values(cartItems).forEach(item => {
             if (!item) return;
-            
+
             if (typeof item === 'object' && item.quantity > 0) {
                 totalCount += item.quantity;
             } else if (typeof item === 'number' && item > 0) {
@@ -204,23 +236,19 @@ const ShopContextProvider = (props) => {
     const getTypeOfProductsAddedInCart = () => {
         // Count the number of unique product IDs in the cart
         return Object.keys(cartItems).filter(itemId => {
-          const item = cartItems[itemId];
-          // Only count items that exist and have positive quantity
-          if (!item) return false;
-          
-          const quantity = typeof item === 'object' ? item.quantity : item;
-          return quantity > 0;
+            const item = cartItems[itemId];
+            // Only count items that exist and have positive quantity
+            if (!item) return false;
+
+            const quantity = typeof item === 'object' ? item.quantity : item;
+            return quantity > 0;
         }).length;
-      }
+    }
 
     const updateQuantity = async (itemId, itemData) => {
         try {
             // Convert old format to new format if needed
-            const cartData = typeof itemData === 'number' ? {
-                quantity: itemData,
-                selectedPrice: null,
-                isPackage: false
-            } : itemData;
+            const cartData = typeof itemData === 'number' ? getDefaultCartItem(itemData) : itemData;
 
             // Validate cart data
             if (!cartData || typeof cartData !== 'object') {
@@ -235,11 +263,11 @@ const ShopContextProvider = (props) => {
                 setCartItem(newCartItems);
 
                 if (token) {
-                    await axios.post(backendUrl + '/api/cart/update', {
-                        itemId, 
+                    await axios.post(`${backendUrl}${CART_UPDATE_ENDPOINT}`, {
+                        itemId,
                         cartData: { quantity: 0 }
                     }, {
-                        headers: {token}
+                        headers: { token }
                     });
                 }
                 return;
@@ -266,11 +294,11 @@ const ShopContextProvider = (props) => {
             setCartItem(newCartItems);
 
             if (token) {
-                await axios.post(backendUrl + '/api/cart/update', {
-                    itemId, 
+                await axios.post(`${backendUrl}${CART_UPDATE_ENDPOINT}`, {
+                    itemId,
                     cartData
                 }, {
-                    headers: {token}
+                    headers: { token }
                 });
             }
         } catch (error) {
@@ -281,7 +309,7 @@ const ShopContextProvider = (props) => {
 
     const getCartAmount = () => {
         let totalAmount = 0;
-        for(const itemId in cartItems){
+        for (const itemId in cartItems) {
             const item = cartItems[itemId];
             if (!item) continue;
 
@@ -322,46 +350,33 @@ const ShopContextProvider = (props) => {
     const getProductsData = async (initialLoad = false) => {
         try {
             setLoading(true);
-            
+
             // If it's the initial load, just get featured products
             if (initialLoad) {
-                // Use the new user-specific endpoint
-                const featuredResponse = await axios.post(backendUrl + '/api/product/user/list', {
+                const featuredResponse = await axios.post(`${backendUrl}${PRODUCT_LIST_ENDPOINT}`, {
                     limit: 10,
                     bestseller: true,
                     sortBy: 'date',
                     sortOrder: 'desc'
                 });
-                
+
                 if (featuredResponse.data.success) {
                     setFeaturedProducts(featuredResponse.data.products);
                 }
                 setLoading(false);
                 return;
             }
-            
-            // For regular page loads, use filters and pagination
-            // Use the new user-specific endpoint
-            const response = await axios.post(backendUrl + '/api/product/user/list', {
+
+            const response = await axios.post(`${backendUrl}${PRODUCT_LIST_ENDPOINT}`, {
                 page: productsPagination.currentPage,
                 limit: productsPagination.limit,
                 ...filters,
-                search: filters.search || search // Use either direct search or from filters
+                search: filters.search || search
             });
-            
-            if (response.data.success) {
-                setProducts(response.data.products);
-                setProductsPagination({
-                    total: response.data.pagination.total,
-                    pages: response.data.pagination.pages,
-                    currentPage: response.data.pagination.currentPage,
-                    limit: response.data.pagination.limit
-                });
-            } else {
-                toast.error(response.data.message);
-            }
+
+            updateProductsFromResponse(response.data, setProducts, setProductsPagination);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(error.message);
         } finally {
             setLoading(false);
@@ -372,15 +387,15 @@ const ShopContextProvider = (props) => {
     const getProductById = async (productId) => {
         try {
             setLoading(true);
-            const response = await axios.get(`${backendUrl}/api/product/${productId}`);
+            const response = await axios.get(`${backendUrl}${PRODUCT_DETAILS_ENDPOINT}/${productId}`);
             if (response.data.success) {
                 return response.data.product;
-            } else {
-                toast.error(response.data.message);
-                return null;
             }
+
+            toast.error(response.data.message);
+            return null;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(error.message);
             return null;
         } finally {
@@ -392,8 +407,7 @@ const ShopContextProvider = (props) => {
     const getRelatedProducts = async (category, subCategory, excludeId, limit = 5) => {
         try {
             setLoading(true);
-            // Use the new user-specific endpoint
-            const response = await axios.post(backendUrl + '/api/product/user/list', {
+            const response = await axios.post(`${backendUrl}${PRODUCT_LIST_ENDPOINT}`, {
                 category,
                 subCategory,
                 excludeId,
@@ -401,14 +415,14 @@ const ShopContextProvider = (props) => {
                 sortBy: 'date',
                 sortOrder: 'desc'
             });
-            
+
             if (response.data.success) {
                 return response.data.products;
-            } else {
-                return [];
             }
+
+            return [];
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return [];
         } finally {
             setLoading(false);
@@ -417,46 +431,20 @@ const ShopContextProvider = (props) => {
 
     const getUserCart = async (token) => {
         try {
-            const response = await axios.post(backendUrl + '/api/cart/get', {}, {headers:{token}});
+            const response = await axios.post(`${backendUrl}${CART_GET_ENDPOINT}`, {}, { headers: { token } });
             if (response.data.success) {
-                // Make sure we're setting the complete cart data structure
-                const cartData = response.data.cartData || {};
-                
-                // Validate the structure of each cart item
-                Object.entries(cartData).forEach(([itemId, item]) => {
-                    // Skip null or undefined items
-                    if (item === null || item === undefined) {
-                        delete cartData[itemId];
-                        return;
-                    }
-                    
-                    // If the item is in old format (just a number), convert it to new format
-                    if (typeof item === 'number') {
-                        cartData[itemId] = {
-                            quantity: item,
-                            selectedPrice: null,
-                            isPackage: false
-                        };
-                    } 
-                    // If the item exists but has missing properties, ensure they exist
-                    else if (typeof item === 'object') {
-                        if (!Object.prototype.hasOwnProperty.call(item, 'quantity')) item.quantity = 1;
-                        if (!Object.prototype.hasOwnProperty.call(item, 'selectedPrice')) item.selectedPrice = null;
-                        if (!Object.prototype.hasOwnProperty.call(item, 'isPackage')) item.isPackage = false;
-                    }
-                });
-                
-                setCartItem(cartData);
+                const normalizedCartData = normalizeCartData(response.data.cartData || {});
+                setCartItem(normalizedCartData);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(error.message);
         }
     }
 
     const getCartItems = () => {
         const items = [];
-        for(const itemId in cartItems) {
+        for (const itemId in cartItems) {
             const item = cartItems[itemId];
             if (!item) continue;
 
@@ -466,8 +454,8 @@ const ShopContextProvider = (props) => {
             const quantity = typeof item === 'object' ? item.quantity : item;
             if (quantity <= 0) continue;
 
-            const price = typeof item === 'object' && item.selectedPrice 
-                ? item.selectedPrice 
+            const price = typeof item === 'object' && item.selectedPrice
+                ? item.selectedPrice
                 : product.price;
 
             items.push({
@@ -489,7 +477,7 @@ const ShopContextProvider = (props) => {
 
     // Listen for changes in filters and pagination to fetch products
     useEffect(() => {
-        if (showSearch || (filters.category.length > 0) || (filters.subCategory.length > 0) || 
+        if (showSearch || (filters.category.length > 0) || (filters.subCategory.length > 0) ||
             filters.search || productsPagination.currentPage > 1) {
             getProductsData();
         }
@@ -516,7 +504,7 @@ const ShopContextProvider = (props) => {
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
         setToken, token, getCartItems, getItemTotal,
-        filters, updateFilters, 
+        filters, updateFilters,
         pagination: productsPagination,
         setPage,
         getProductById,
@@ -524,7 +512,7 @@ const ShopContextProvider = (props) => {
         getTypeOfProductsAddedInCart
     }
 
-    return(
+    return (
         <ShopContext.Provider value={value}>
             {props.children}
         </ShopContext.Provider>

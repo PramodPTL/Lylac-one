@@ -7,6 +7,36 @@ import { Loader2, AlertTriangle } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// Parses the product's quantity-price configuration from either a JSON string or an array.
+const parseQuantityPriceList = (quantityPriceList) => {
+  if (!quantityPriceList) return [];
+
+  try {
+    if (typeof quantityPriceList === "string") {
+      return JSON.parse(quantityPriceList);
+    }
+
+    if (Array.isArray(quantityPriceList)) {
+      return quantityPriceList;
+    }
+  } catch (error) {
+    console.error("Error parsing quantity price list:", error);
+  }
+
+  return [];
+};
+
+// Returns the smallest quantity package from a price list.
+const getSmallestPackage = (priceList) => {
+  if (!priceList?.length) return null;
+
+  return priceList.reduce(
+    (min, current) =>
+      parseInt(current.quantity) < parseInt(min.quantity) ? current : min,
+    priceList[0]
+  );
+};
+
 const Product = () => {
   const { productId } = useParams();
   const { currency, addToCart, backendUrl } = useContext(ShopContext);
@@ -35,30 +65,10 @@ const Product = () => {
 
         // If product has quantity price list, select the smallest package by default
         if (product.quantityPriceList) {
-          let priceList;
+          const priceList = parseQuantityPriceList(product.quantityPriceList);
+          const smallestPackage = getSmallestPackage(priceList);
 
-          if (typeof product.quantityPriceList === "string") {
-            try {
-              priceList = JSON.parse(product.quantityPriceList);
-            } catch (error) {
-              console.error("Error parsing quantity price list:", error);
-              priceList = [];
-            }
-          } else if (Array.isArray(product.quantityPriceList)) {
-            priceList = product.quantityPriceList;
-          } else {
-            priceList = [];
-          }
-
-          if (priceList.length > 0) {
-            const smallestPackage = priceList.reduce(
-              (min, current) =>
-                parseInt(current.quantity) < parseInt(min.quantity)
-                  ? current
-                  : min,
-              priceList[0]
-            );
-
+          if (smallestPackage) {
             setSelectedQuantityPrice(smallestPackage);
             setQuantity(parseInt(smallestPackage.quantity));
           }
@@ -111,19 +121,7 @@ const Product = () => {
   };
 
   const getParsedQuantityPriceList = () => {
-    if (!productData?.quantityPriceList) return [];
-
-    try {
-      if (typeof productData.quantityPriceList === "string") {
-        return JSON.parse(productData.quantityPriceList);
-      } else if (Array.isArray(productData.quantityPriceList)) {
-        return productData.quantityPriceList;
-      }
-    } catch (error) {
-      console.error("Error parsing quantity price list:", error);
-    }
-
-    return [];
+    return parseQuantityPriceList(productData?.quantityPriceList);
   };
 
   if (loading) {
@@ -207,12 +205,11 @@ const Product = () => {
                   <button
                     key={index}
                     onClick={() => handleQuantityPriceSelect(qp)}
-                    className={`p-3 border ${
-                      selectedQuantityPrice &&
-                      selectedQuantityPrice.quantity === qp.quantity
+                    className={`p-3 border ${selectedQuantityPrice &&
+                        selectedQuantityPrice.quantity === qp.quantity
                         ? "border-black dark:border-yellow-400 bg-[#02ADEE] dark:bg-[#02ADEE] text-white dark:text-gray-800"
                         : "border-gray-300 dark:border-gray-600 hover:border-black dark:hover:border-yellow-400"
-                    }`}
+                      }`}
                   >
                     {qp.quantity} units - {currency}
                     {qp.price}
@@ -259,68 +256,13 @@ const Product = () => {
           </div>
 
           <button
-            onClick={() => {
-              const cartItem = {
-                quantity: quantity,
-                selectedPrice: selectedQuantityPrice
-                  ? selectedQuantityPrice.price
-                  : productData.price,
-                isPackage: !!selectedQuantityPrice,
-              };
-              addToCart(productData._id, cartItem);
-
-              // If product has quantity price list, reselect the smallest package
-              if (productData.quantityPriceList) {
-                const priceList = getParsedQuantityPriceList();
-                if (priceList.length > 0) {
-                  const smallestPackage = priceList.reduce(
-                    (min, current) =>
-                      parseInt(current.quantity) < parseInt(min.quantity)
-                        ? current
-                        : min,
-                    priceList[0]
-                  );
-                  setSelectedQuantityPrice(smallestPackage);
-                  setQuantity(parseInt(smallestPackage.quantity));
-                }
-              } else {
-                setSelectedQuantityPrice(null);
-              }
-            }}
+            onClick={() => handleAddToCart(false)}
             className="bg-[#02ADEE] text-white px-8 py-3 text-sm active:bg-gray-700 dark:bg-[#02ADEE] dark:text-gray-800 dark:hover:bg-yellow-500"
           >
             ADD TO CART
           </button>
           <button
-            onClick={() => {
-              const cartItem = {
-                quantity: quantity,
-                selectedPrice: selectedQuantityPrice
-                  ? selectedQuantityPrice.price
-                  : productData.price,
-                isPackage: !!selectedQuantityPrice,
-              };
-              addToCart(productData._id, cartItem);
-
-              // If product has quantity price list, reselect the smallest package
-              if (productData.quantityPriceList) {
-                const priceList = getParsedQuantityPriceList();
-                if (priceList.length > 0) {
-                  const smallestPackage = priceList.reduce(
-                    (min, current) =>
-                      parseInt(current.quantity) < parseInt(min.quantity)
-                        ? current
-                        : min,
-                    priceList[0]
-                  );
-                  setSelectedQuantityPrice(smallestPackage);
-                  setQuantity(parseInt(smallestPackage.quantity));
-                }
-              } else {
-                setSelectedQuantityPrice(null);
-              }
-              navigate("/cart");
-            }}
+            onClick={() => handleAddToCart(true)}
             className="bg-[#02ADEE] text-white mx-4 px-8 py-3 text-sm active:bg-gray-700 dark:bg-[#02ADEE] dark:text-gray-800 dark:hover:bg-yellow-500"
           >
             BUY NOW
