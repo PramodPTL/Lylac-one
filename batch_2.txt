@@ -1,0 +1,13 @@
+﻿C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\marketplace\MarketPlaceApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\order\OrderApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\order\OrderPaymentApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\order\OrderShippingApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\order\OrderStatusHistoryApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\order\OrderTotalApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\payment\PaymentApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductAttributeOptionApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductGroupApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductImageApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductInventoryApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductManufacturerApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductPriceApi.java

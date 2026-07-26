@@ -30,12 +30,12 @@ import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Searching and indexing products
+ * REST API for search and indexing operations.
  * 
- * @author c.samson
- *
+ * Provides administrative endpoints to trigger product indexing.
+ * Requires appropriate admin privileges and validates tenant (merchant store) context.
+ * Relies on SearchFacade for executing indexing logic.
  */
-
 @Controller
 @RequestMapping("/api/v1")
 public class SearchToolsApi {
@@ -48,6 +48,10 @@ public class SearchToolsApi {
 	@Inject
 	private UserFacade userFacade;
 
+	/**
+	 * Triggers the indexing of all products for the specified merchant store.
+	 * Requires the user to have admin-level permissions and belong to the requested store.
+	 */
 	@PostMapping("/private/system/search/index")
 	@ApiOperation(httpMethod = "POST", value = "Indexes all products", notes = "", produces = "application/json")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),

@@ -62,7 +62,13 @@ import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * API to create, read, update and delete a Product API.
+ * REST controller for managing Product resources.
+ * 
+ * <p>This API provides endpoints to create, read, update, and delete products, 
+ * as well as manage product relationships with categories and sort orders.</p>
+ * 
+ * <p>It acts as the primary entry point for frontend clients to interact with product data 
+ * within the Lylac-one platform, delegating business logic to facades and core services.</p>
  *
  * @author Carl Samson
  */
@@ -93,11 +99,12 @@ public class ProductApi {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductApi.class);
 
 	/**
-	 * Create product
-	 * @param product
-	 * @param merchantStore
-	 * @param language
-	 * @return Entity
+	 * Creates a new product for a given merchant store.
+	 * 
+	 * @param product The product details to persist
+	 * @param merchantStore The resolved store context
+	 * @param language The resolved language context
+	 * @return Entity wrapping the ID of the newly created product
 	 */
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = { "/private/product", "/auth/products" }, // private
@@ -117,6 +124,15 @@ public class ProductApi {
 
 	}
 
+	/**
+	 * Updates an existing product comprehensively.
+	 * 
+	 * @param id The ID of the product to update
+	 * @param product The updated product payload
+	 * @param merchantStore The resolved store context
+	 * @param request The HTTP request
+	 * @param response The HTTP response
+	 */
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = { "/private/product/{id}", "/auth/product/{id}" }, method = RequestMethod.PUT)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
@@ -144,7 +160,14 @@ public class ProductApi {
 		}
 	}
 
-	/** updates price quantity **/
+	/** 
+	 * Updates specific attributes (e.g. price, quantity) of a product without replacing the entire entity.
+	 * 
+	 * @param id The ID of the product
+	 * @param product The payload containing partial updates
+	 * @param merchantStore The resolved store context
+	 * @param language The resolved language context
+	 */
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(value = "/private/product/{id}", produces = { APPLICATION_JSON_VALUE })
 	@ApiOperation(httpMethod = "PATCH", value = "Update product inventory", notes = "Updates product inventory", produces = "application/json", response = Void.class)

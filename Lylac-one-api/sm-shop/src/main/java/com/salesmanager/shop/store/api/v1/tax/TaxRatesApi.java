@@ -36,12 +36,12 @@ import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Tax class management
+ * REST API for tax rate management.
  * 
- * @author carlsamson
- *
+ * Provides endpoints to create, read, update, and delete tax rates associated 
+ * with a specific merchant store. Ensures tenant data isolation.
+ * Uses TaxFacade to delegate business logic.
  */
-
 @RestController
 @RequestMapping(value = "/api/v1")
 @Api(tags = { "Tax rates management resource (Tax rates management Api)" })
@@ -64,6 +64,7 @@ public class TaxRatesApi {
 
 	}
 
+	/** Verify if a tax rate code is unique for the given MerchantStore */
 	@GetMapping(value = "/private/tax/rate/unique", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Verify if taxRate is unique", notes = "", produces = "application/json", response = ResponseEntity.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
@@ -88,6 +89,7 @@ public class TaxRatesApi {
 
 	}
 
+	/** List tax rates for a given MerchantStore with pagination */
 	@GetMapping(value = "/private/tax/rates", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "List taxRates by store", notes = "", produces = "application/json", response = ReadableEntityList.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
@@ -109,6 +111,7 @@ public class TaxRatesApi {
 
 	}
 
+	/** Delete a tax rate by its ID for a given MerchantStore */
 	@DeleteMapping(value = "/private/tax/rate/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "DELETE", value = "Delete tax rate", notes = "", produces = "application/json", response = Void.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),

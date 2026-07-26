@@ -148,23 +148,45 @@ public class AuthenticateCustomerApi {
     }
 
     /**
-     * Authenticate a customer using username & password
+     * Authenticate a customer using username & password, scoped to a specific pharmacy store.
+     * The ?store= parameter is required; defaults to DEFAULT if omitted.
+     * Verifies the customer belongs to the requested store before issuing a JWT.
      * @param authenticationRequest
-     * @param device
-     * @return
+     * @param merchantStore — resolved from ?store= query param (see MerchantStoreArgumentResolver)
      * @throws AuthenticationException
      */
     @RequestMapping(value = "/customer/login", method = RequestMethod.POST, produces ={ "application/json" })
-    @ApiOperation(httpMethod = "POST", value = "Authenticates a customer to the application", notes = "Customer can authenticate after registration, request is {\"username\":\"admin\",\"password\":\"password\"}",response = ResponseEntity.class)
+    @ApiOperation(httpMethod = "POST", value = "Authenticates a customer to the application", notes = "Customer can authenticate after registration, request is {\"username\":\"admin\",\"password\":\"password\"}. Use ?store=STORE_CODE to scope login to a pharmacy.",response = ResponseEntity.class)
+    @ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT"),
+            @ApiImplicitParam(name = "lang", dataType = "string", defaultValue = "en") })
     @ResponseBody
-    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest) throws AuthenticationException {
+    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationRequest authenticationRequest,
+            @ApiIgnore MerchantStore merchantStore,
+            @ApiIgnore Language language) throws AuthenticationException {
 
-    	//TODO SET STORE in flow
+        // --- Lylac One: Store-scoped login ---
+        // Verify this customer is registered at the requested pharmacy store.
+        // Prevents a customer from one pharmacy using their credentials at another.
+        try {
+            Customer storeCustomer = customerFacade.getCustomerByUserName(
+                    authenticationRequest.getUsername(), merchantStore);
+            if (storeCustomer == null) {
+                LOGGER.warn("Login attempt for user [{}] not found in store [{}]",
+                        authenticationRequest.getUsername(), merchantStore.getCode());
+                return new ResponseEntity<>(
+                        "{\"message\":\"Customer not found for this pharmacy store\"}",
+                        HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error verifying customer store membership during login", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        // --- End Lylac One store-scoped login ---
+
         // Perform the security
         Authentication authentication = null;
         try {
-            
-    
+
                 //to be used when username and password are set
                 authentication = jwtCustomerAuthenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(

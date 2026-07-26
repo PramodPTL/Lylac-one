@@ -48,6 +48,15 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
+/**
+ * REST controller for managing Shopping Carts.
+ * 
+ * <p>Provides endpoints to create, read, update, and delete shopping carts and their items. 
+ * Supports both anonymous (guest) carts via codes and authenticated customer carts.</p>
+ * 
+ * <p>Integrates with ShoppingCartFacade for cart operations and CustomerService 
+ * to handle authenticated user contexts.</p>
+ */
 @Controller
 @RequestMapping("/api/v1")
 @Api(tags = { "Shopping cart api" })
@@ -72,6 +81,15 @@ public class ShoppingCartApi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartApi.class);
 
+	/**
+	 * Adds a product to the shopping cart. 
+	 * If no cart exists in the request context, a new cart ID will be generated.
+	 * 
+	 * @param shoppingCartItem The item to add
+	 * @param merchantStore The resolved store context
+	 * @param language The resolved language context
+	 * @return The updated readable shopping cart
+	 */
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/cart")
 	@ApiOperation(httpMethod = "POST", value = "Add product to shopping cart when no cart exists, this will create a new cart id", notes = "No customer ID in scope. Add to cart for non authenticated users, as simple as {\"product\":1232,\"quantity\":1}", produces = "application/json", response = ReadableShoppingCart.class)
@@ -84,6 +102,16 @@ public class ShoppingCartApi {
 		return shoppingCartFacade.addToCart(shoppingCartItem, merchantStore, language);
 	}
 
+	/**
+	 * Modifies an existing shopping cart (e.g., updating quantities or adding new items).
+	 * 
+	 * @param code The unique code of the shopping cart
+	 * @param shoppingCartItem The cart item modifications
+	 * @param merchantStore The resolved store context
+	 * @param language The resolved language context
+	 * @param response The HTTP response
+	 * @return The updated readable shopping cart
+	 */
 	@PutMapping(value = "/cart/{code}")
 	@ApiOperation(httpMethod = "PUT", value = "Add to an existing shopping cart or modify an item quantity", notes = "No customer ID in scope. Modify cart for non authenticated users, as simple as {\"product\":1232,\"quantity\":0} for instance will remove item 1234 from cart", produces = "application/json", response = ReadableShoppingCart.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
