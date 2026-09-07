@@ -34,11 +34,12 @@ import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * This API is for payment modules configurations. For payment of orders see
- * order
+ * REST controller for managing payment module configurations.
+ * This API handles listing available payment modules, retrieving module details,
+ * and saving payment integration configurations.
+ * Note: For actual payment processing during checkout, see the Order API.
  * 
  * @author carlsamson
- *
  */
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -52,11 +53,12 @@ public class PaymentApi {
 	private PaymentService paymentService;
 
 	/**
-	 * Get available payment modules
+	 * Get a list of all available payment modules for the store.
+	 * Also identifies which modules are currently configured and active.
 	 * 
-	 * @param merchantStore
-	 * @param language
-	 * @return
+	 * @param merchantStore The current merchant store
+	 * @param language The request language
+	 * @return A list of payment module summaries
 	 */
 	@GetMapping("/private/modules/payment")
 	@ApiOperation(httpMethod = "GET", value = "List list of payment modules", notes = "Requires administration access", produces = "application/json", response = List.class)
@@ -80,6 +82,13 @@ public class PaymentApi {
 
 	}
 
+	/**
+	 * Configures and saves a payment module integration.
+	 * Updates the active status, default selection, integration keys, and options.
+	 * 
+	 * @param configuration The configuration details to save
+	 * @param merchantStore The current merchant store
+	 */
 	@PostMapping(value = "/private/modules/payment")
 	public void configure(
 			@RequestBody IntegrationModuleConfiguration configuration,
@@ -124,12 +133,13 @@ public class PaymentApi {
 	}
 
 	/**
-	 * Get merchant payment module details
+	 * Retrieve detailed configuration for a specific merchant payment module.
+	 * Includes both module metadata and its current integration configuration if it exists.
 	 * 
-	 * @param code
-	 * @param merchantStore
-	 * @param language
-	 * @return
+	 * @param code The payment module code
+	 * @param merchantStore The current merchant store
+	 * @param language The request language
+	 * @return The detailed integration module configuration
 	 */
 	@GetMapping("/private/modules/payment/{code}")
 	@ApiOperation(httpMethod = "GET", value = "Payment module by code", produces = "application/json", response = List.class)
@@ -181,6 +191,13 @@ public class PaymentApi {
 
 	}
 
+	/**
+	 * Maps an IntegrationModule and its configured state into a summary entity for the API response.
+	 * 
+	 * @param module The base integration module
+	 * @param configuredModules The map of currently configured modules for the store
+	 * @return A summary entity containing configuration and active status
+	 */
 	private IntegrationModuleSummaryEntity integrationModule(IntegrationModule module,
 			Map<String, IntegrationConfiguration> configuredModules) {
 

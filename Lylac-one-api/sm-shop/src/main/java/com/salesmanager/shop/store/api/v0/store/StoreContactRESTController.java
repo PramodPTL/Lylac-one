@@ -35,9 +35,11 @@ import com.salesmanager.shop.utils.LocaleUtils;
 
 
 /**
- * Rest services for sending contact
+ * REST controller for handling store contact and related system configurations.
+ * Responsibilities include retrieving store context and sending contact form emails.
+ * Interacts with merchant store service, language service, and email templates utility.
+ * 
  * @author Carl Samson
- *
  */
 @Controller
 @RequestMapping("/services")
@@ -58,6 +60,10 @@ public class StoreContactRESTController {
 	
 
 	
+	/**
+	 * Endpoint to validate store context and retrieve store details.
+	 * Returns HTTP 202 Accepted upon success.
+	 */
 	@RequestMapping( value="/public/{store}", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	@ResponseBody
@@ -104,6 +110,10 @@ public class StoreContactRESTController {
 	}
 	
 	
+	/**
+	 * Endpoint to handle submission of store contact form.
+	 * Retrieves store context, determines language, and triggers email sending using EmailTemplatesUtils.
+	 */
 	@RequestMapping( value="/public/{store}/contact", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	@ResponseBody

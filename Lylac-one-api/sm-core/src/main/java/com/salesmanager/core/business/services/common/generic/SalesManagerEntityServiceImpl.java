@@ -9,15 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 
-/**
- * @param <T> entity type
- */
+
 public abstract class SalesManagerEntityServiceImpl<K extends Serializable & Comparable<K>, E extends SalesManagerEntity<K, ?>>
 	implements SalesManagerEntityService<K, E> {
 	
-	/**
-	 * Classe de l'entité, déterminé à partir des paramètres generics.
-	 */
+	
 	private Class<E> objectClass;
 
 
@@ -63,8 +59,7 @@ public abstract class SalesManagerEntityServiceImpl<K extends Serializable & Com
 	public void delete(E entity) throws ServiceException {
 		repository.delete(entity);
 	}
-	
-	
+
 	public void flush() {
 		repository.flush();
 	}

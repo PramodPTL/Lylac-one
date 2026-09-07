@@ -1,0 +1,13 @@
+﻿C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v0\store\StoreContactRESTController.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v0\system\SystemRESTController.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\catalog\CatalogApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\category\CategoryApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\configurations\CacheApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\configurations\ConfigurationsApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\content\ContentAdministrationApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\content\ContentApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\customer\AuthenticateCustomerApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\customer\CustomerApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\customer\CustomerNewsletterApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\customer\CustomerReviewApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\customer\ResetCustomerPasswordApi.java

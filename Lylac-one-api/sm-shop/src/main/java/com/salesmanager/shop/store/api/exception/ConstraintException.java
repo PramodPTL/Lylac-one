@@ -1,5 +1,9 @@
 package com.salesmanager.shop.store.api.exception;
 
+/**
+ * Exception thrown when a data constraint violation occurs.
+ * Typically used to wrap persistence or validation constraint errors.
+ */
 public class ConstraintException extends GenericRuntimeException {
 
     /**

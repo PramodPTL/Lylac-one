@@ -24,6 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * REST controller for catalog management operations.
+ * Responsibilities include retrieving, creating, updating, and deleting catalogs, 
+ * as well as managing catalog entries. Interacts primarily with the CatalogFacade 
+ * to execute business operations.
+ */
 @RestController
 @RequestMapping(value = "/api/v1")
 @Api(tags = {"Catalog management resource (Catalog Management Api)"})
@@ -38,6 +44,10 @@ public class CatalogApi {
   private CatalogFacade catalogFacade;
 
 
+  /**
+   * Retrieves a list of catalogs associated with a merchant.
+   * Supports pagination.
+   */
   @GetMapping(value = "/private/catalogs")
   @ResponseStatus(HttpStatus.OK)
   @ApiOperation(httpMethod = "GET", value = "Get catalogs by merchant", notes = "",
@@ -73,6 +83,9 @@ public class CatalogApi {
   }
 
 
+  /**
+   * Creates a new catalog for the current merchant store.
+   */
   @PostMapping(value = "/private/catalog")
   @ResponseStatus(HttpStatus.OK)
   @ApiOperation(httpMethod = "POST", value = "Create catalog", notes = "",

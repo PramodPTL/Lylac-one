@@ -1,0 +1,11 @@
+﻿C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\system\PublicConfigsApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\system\SearchToolsApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\tax\TaxClassApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\tax\TaxRatesApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\user\AuthenticateUserApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\user\ResetUserPasswordApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\user\UserApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v2\product\ProductApiV2.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v2\product\ProductVariantApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v2\product\ProductVariantGroupApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v2\product\ProductVariationApi.java

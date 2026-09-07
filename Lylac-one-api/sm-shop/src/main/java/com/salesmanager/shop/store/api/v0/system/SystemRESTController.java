@@ -18,9 +18,11 @@ import com.salesmanager.core.business.utils.ajax.AjaxResponse;
 
 
 /**
- * Rest services for the system configuration
+ * REST controller for managing system configurations and integration modules.
+ * Handles the creation, update, and deletion of module configurations (e.g., payment, shipping)
+ * and opt-in settings. Interacts with ModuleConfigurationService to persist configurations.
+ * 
  * @author Carl Samson
- *
  */
 @Controller
 @RequestMapping("/services")
@@ -84,6 +86,9 @@ public class SystemRESTController {
 
 	}
 	
+	/**
+	 * Endpoint to create a new opt-in setting for the system.
+	 */
 	@RequestMapping( value="/private/system/optin", method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponse createOptin(@RequestBody final String json, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -107,6 +112,9 @@ public class SystemRESTController {
 
 	}
 	
+	/**
+	 * Endpoint to delete an existing opt-in setting by its code.
+	 */
 	@RequestMapping( value="/private/system/optin/{code}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public AjaxResponse deleteOptin(@RequestBody final String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -130,6 +138,9 @@ public class SystemRESTController {
 
 	}
 	
+	/**
+	 * Endpoint to create an opt-in for a specific customer associated with a given code.
+	 */
 	@RequestMapping( value="/private/system/optin/{code}/customer", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
 	public AjaxResponse createOptinCustomer(@RequestBody final String code, HttpServletRequest request, HttpServletResponse response) throws Exception {

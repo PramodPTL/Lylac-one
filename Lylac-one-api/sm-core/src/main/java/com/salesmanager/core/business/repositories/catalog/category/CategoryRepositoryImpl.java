@@ -15,6 +15,9 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom {
 	
 	@PersistenceContext
     private EntityManager em;
+
+
+
 	
 	@Override
 	public List<Object[]> countProductsByCategories(MerchantStore store, List<Long> categoryIds) {

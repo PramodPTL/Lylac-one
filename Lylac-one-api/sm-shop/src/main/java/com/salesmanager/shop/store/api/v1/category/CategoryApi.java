@@ -47,6 +47,12 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
+/**
+ * REST API for managing categories.
+ * Provides endpoints for retrieving, creating, updating, and deleting categories,
+ * as well as managing visibility and parent-child hierarchy.
+ * Interacts with CategoryFacade for category operations and UserFacade for authentication checks.
+ */
 @RestController
 @RequestMapping(value = "/api/v1")
 @Api(tags = { "Category management resource (Category Management Api)" })
@@ -143,6 +149,10 @@ public class CategoryApi {
 
 	}
 
+	/**
+	 * Creates a new category.
+	 * Requires the user to have adequate privileges (superadmin, admin, or admin_catalogue).
+	 */
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/private/category", produces = { APPLICATION_JSON_VALUE })
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT"),
