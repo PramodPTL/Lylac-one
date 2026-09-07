@@ -69,7 +69,6 @@ public class CategoryServiceImpl extends SalesManagerEntityServiceImpl<Long, Cat
     category.setLineage(lineage.toString());
     super.update(category);
 
-
   }
 
   @Override
