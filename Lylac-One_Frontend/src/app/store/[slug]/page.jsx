@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { PHARMACIES, STORE_DETAILS } from '@/lib/constants/mockData';
 import { storeApi } from '@/services';
 import { STORE_CODE } from '@/lib/api';
-import { StoreStorefront } from '@/components/lylac/store/StoreStorefront';
+import { StoreStorefront } from '@/modules/pharmacy/components/StoreStorefront';
 
 export async function generateStaticParams() {
   return PHARMACIES.map((p) => ({ slug: p.slug }));

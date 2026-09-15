@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { ADDRESSES, ORDERS, PHARMACIES, MEDICINES, CATEGORIES } from '@/lib/constants/mockData';
 import { toast } from 'sonner';
-import { MedicineCard, CategoryCard } from '../pharmacy/Cards';
+import { MedicineCard, CategoryCard } from '../../pharmacy/components/Cards';
 import * as Icons from 'lucide-react';
 
 // =============== CART VIEW ===============
@@ -698,7 +698,7 @@ export function AllPharmaciesView({ onBack, onOpenStore }) {
       if (sort === 'delivery') return parseInt(a.deliveryTime) - parseInt(b.deliveryTime);
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
-  const { StoreCard } = require('../pharmacy/Cards');
+  const { StoreCard } = require('../../pharmacy/components/Cards');
   return (
     <div className="pb-24 md:pb-8">
       <div className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">

@@ -12,7 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { MedicineCard } from '@/components/lylac/Cards';
+import { MedicineCard } from './Cards';
 import { usePersistedState, useDarkMode } from '@/hooks/usePersistedState';
 import { useProducts } from '@/hooks/useCatalog';
 import { PHARMACIES, MEDICINES, CATEGORIES, STORE_DETAILS, STORE_BRAND } from '@/lib/constants/mockData';

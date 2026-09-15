@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { MedicineCard } from '@/components/lylac/Cards';
+import { MedicineCard } from './Cards';
 import { usePersistedState, useDarkMode } from '@/hooks/usePersistedState';
 import { PHARMACIES, MEDICINES, CATEGORIES, STORE_DETAILS } from '@/lib/constants/mockData';
 import * as Icons from 'lucide-react';

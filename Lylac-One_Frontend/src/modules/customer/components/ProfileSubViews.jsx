@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MapPin, Plus, Home, Briefcase, Trash2, Edit, CreditCard, Wallet, Star, Users, FileText, Bell, HelpCircle, Phone, Mail, MessageCircle, FileCheck, Gift, Percent, Share2, Copy, Upload, Calendar, Clock, Pill, Heart, ChevronRight, Award, Camera } from 'lucide-react';
 import { ADDRESSES, MEDICINES, PHARMACIES, ORDERS } from '@/lib/constants/mockData';
 import { toast } from 'sonner';
-import { MedicineCard } from '../pharmacy/Cards';
+import { MedicineCard } from '../../pharmacy/components/Cards';
 
 // ----- Sub view mapping helper -----
 export function ProfileSubView({ view, onBack, onNavigate, wishlist, addToCart, cart, removeFromWishlist }) {
