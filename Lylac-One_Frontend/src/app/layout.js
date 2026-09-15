@@ -1,6 +1,6 @@
-import './globals.css';
+import '../styles/globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import { Providers } from './providers';
+import { Providers } from '@/providers/Providers';
 
 export const metadata = {
   title: 'Lylac One — Your Neighbourhood Pharmacy, Delivered',

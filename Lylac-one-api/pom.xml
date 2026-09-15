@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.lylac-one</groupId>
-	<artifactId>lylac-one</artifactId>
+	<groupId>com.shopizer</groupId>
+	<artifactId>shopizer</artifactId>
 	<packaging>pom</packaging>
 	<version>3.2.5</version>
 
-	<name>lylac-one</name>
-	<url>http://www.lylac-one.com</url>
+	<name>shopizer</name>
+	<url>http://www.shopizer.com</url>
 
 	<licenses>
 		<license>
@@ -40,8 +40,8 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
-		<lylac-one.search.version>2.11.1</lylac-one.search.version>
-		<lylac-one-canadapost.version>2.15.0</lylac-one-canadapost.version>
+		<shopizer.search.version>2.11.1</shopizer.search.version>
+		<shopizer-canadapost.version>2.15.0</shopizer-canadapost.version>
 
 		<!-- TODO replace with starter -->
 		<elasticsearch.version>7.5.2</elasticsearch.version>
@@ -94,22 +94,22 @@
 				<artifactId>spring-boot-starter-cache</artifactId>
 			</dependency>
 			<dependency>
-				<groupId>com.lylac-one</groupId>
+				<groupId>com.shopizer</groupId>
 				<artifactId>sm-core</artifactId>
 				<version>3.2.5</version>
 			</dependency>
 			<dependency>
-				<groupId>com.lylac-one</groupId>
+				<groupId>com.shopizer</groupId>
 				<artifactId>sm-core-model</artifactId>
 				<version>3.2.5</version>
 			</dependency>
 			<dependency>
-				<groupId>com.lylac-one</groupId>
+				<groupId>com.shopizer</groupId>
 				<artifactId>sm-core-modules</artifactId>
 				<version>3.2.5</version>
 			</dependency>
 			<dependency>
-				<groupId>com.lylac-one</groupId>
+				<groupId>com.shopizer</groupId>
 				<artifactId>sm-shop-model</artifactId>
 				<version>3.2.5</version>
 			</dependency>

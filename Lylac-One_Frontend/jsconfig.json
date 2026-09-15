@@ -2,10 +2,27 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-        "@/*": ["./*"],
-        "@/components/*": ["./components/*"],
-        "@/lib/*": ["./lib/*"],
-        "@/app/*": ["./app/*"]
+        "@/*": ["./src/*"],
+        "@/components/ui/*": ["./src/shared/components/ui/*"],
+        "@/components/lylac/store/*": ["./src/modules/pharmacy/store/*"],
+        "@/components/lylac/AppShell": ["./src/modules/pharmacy/AppShell"],
+        "@/components/lylac/HomeView": ["./src/modules/pharmacy/HomeView"],
+        "@/components/lylac/Cards": ["./src/modules/pharmacy/Cards"],
+        "@/components/lylac/MedicineDetailView": ["./src/modules/medicine/MedicineDetailView"],
+        "@/components/lylac/SearchView": ["./src/modules/search/SearchView"],
+        "@/components/lylac/AuthView": ["./src/modules/auth/AuthView"],
+        "@/components/lylac/SettingsView": ["./src/modules/customer/SettingsView"],
+        "@/components/lylac/ProfileSubViews": ["./src/modules/customer/ProfileSubViews"],
+        "@/components/lylac/Views": ["./src/modules/cart/Views"],
+        "@/components/*": ["./src/shared/components/*"],
+        "@/hooks/*": ["./src/shared/hooks/*"],
+        "@/lib/constants/*": ["./src/shared/utils/constants/*"],
+        "@/lib/services": ["./src/services/index.js"],
+        "@/lib/*": ["./src/lib/*"],
+        "@/services": ["./src/services/index.js"],
+        "@/services/*": ["./src/services/*"],
+        "@/providers/*": ["./src/providers/*"],
+        "@/app/*": ["./src/app/*"]
       }
     },
     "exclude": ["node_modules", ".next"]

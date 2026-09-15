@@ -7,7 +7,7 @@ import { StoreCard, MedicineCard, CategoryCard, HealthConcernCard, OfferCard } f
 import { CATEGORIES, HEALTH_CONCERNS, PHARMACIES, MEDICINES, OFFERS, SERVICES, ARTICLES } from '@/lib/constants/mockData';
 import { useProducts, useLiveStore } from '@/hooks/useCatalog';
 import { STORE_CODE } from '@/lib/api';
-import { storeApi } from '@/lib/services';
+import { storeApi } from '@/services';
 import { useMemo } from 'react';
 import * as Icons from 'lucide-react';
 

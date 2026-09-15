@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { PHARMACIES, STORE_DETAILS } from '@/lib/constants/mockData';
-import { storeApi } from '@/lib/services';
+import { storeApi } from '@/services';
 import { STORE_CODE } from '@/lib/api';
 import { StoreStorefront } from '@/components/lylac/store/StoreStorefront';
 

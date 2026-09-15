@@ -9,7 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { MEDICINES, PHARMACIES, TRENDING_SEARCHES, RECENT_SEARCHES, CATEGORIES, HEALTH_CONCERNS } from '@/lib/constants/mockData';
-import { MedicineCard, StoreCard, CategoryCard } from './Cards';
+import { MedicineCard, StoreCard, CategoryCard } from '../pharmacy/Cards';
 
 export function SearchView({ onBack, onAddToCart, cart, onOpenMedicine, onOpenStore }) {
   const [query, setQuery] = useState('');

@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
-import { authApi } from '@/lib/services';
+import { authApi } from '@/services';
 import { STORE_CODE } from '@/lib/api';
 
 export function AuthView({ mode = 'login', onBack, onSuccess, onSwitchMode }) {

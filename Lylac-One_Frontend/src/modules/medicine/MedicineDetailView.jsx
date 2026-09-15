@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import { MEDICINES, PHARMACIES } from '@/lib/constants/mockData';
-import { MedicineCard } from './Cards';
+import { MedicineCard } from '../pharmacy/Cards';
 import { useProducts } from '@/hooks/useCatalog';
 
 export function MedicineDetailView({ medicineId, onBack, cart, onAddToCart, onNavigate, onOpenMedicine, wishlist, toggleWishlist, addToCompare, compare }) {
