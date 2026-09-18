@@ -1,5 +1,9 @@
 package com.salesmanager.shop.store.api.exception;
 
+/**
+ * Exception thrown during object or data conversion failures.
+ * Used when mapping entities to DTOs or vice-versa fails.
+ */
 public class ConversionRuntimeException extends GenericRuntimeException {
 
   /**

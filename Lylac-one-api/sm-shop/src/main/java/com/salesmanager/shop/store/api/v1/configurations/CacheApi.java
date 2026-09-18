@@ -18,9 +18,10 @@ import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
 import com.salesmanager.shop.store.controller.store.facade.StoreFacade;
 
 /**
- *
+ * REST controller for cache management operations.
+ * Provides an endpoint to clear specific caches or the entire cache for a merchant store.
+ * Interacts with StoreFacade and CacheUtils.
  */
-
 @RestController
 @RequestMapping(value = "/api/v1")
 public class CacheApi {
@@ -33,6 +34,10 @@ public class CacheApi {
   @Inject
   private CacheUtils cache;
 
+  /**
+   * Endpoint to clear the cache for a specific store.
+   * If cacheKey is provided, clears that specific key; otherwise, clears all cache for the store.
+   */
   @DeleteMapping(value = "/auth/cache/store/{storeId}/clear")
   public @ResponseBody ResponseEntity<String> clearCache(@PathVariable("storeId") String storeCode,
       @RequestParam(name = "cacheKey", required = false) String cacheKey) {

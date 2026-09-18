@@ -102,18 +102,19 @@ public class UserServiceImpl extends SalesManagerEntityServiceImpl<Long, User> i
 	public Page<User> listByCriteria(UserCriteria criteria, int page, int count) throws ServiceException {
 
 		Pageable pageRequest = PageRequest.of(page, count);
+		String email = StringUtils.defaultString(criteria.getAdminEmail());
 		Page<User> users = null;
 		if (criteria.getStoreIds() != null) {// search within a predefined list
 												// of stores
-			users = pageableUserRepository.listByStoreIds(criteria.getStoreIds(), criteria.getAdminEmail(),
+			users = pageableUserRepository.listByStoreIds(criteria.getStoreIds(), email,
 					pageRequest);
 		} else if (StringUtils.isBlank(criteria.getStoreCode())) {// search for
 																	// a
 																	// specific
 																	// store
-			users = pageableUserRepository.listAll(criteria.getAdminEmail(), pageRequest);
+			users = pageableUserRepository.listAll(email, pageRequest);
 		} else if (criteria.getStoreCode() != null) {// store code
-			users = pageableUserRepository.listByStore(criteria.getStoreCode(), criteria.getAdminEmail(), pageRequest);
+			users = pageableUserRepository.listByStore(criteria.getStoreCode(), email, pageRequest);
 		}
 
 		return users;

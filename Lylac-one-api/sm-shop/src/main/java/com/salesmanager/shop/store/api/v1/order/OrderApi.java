@@ -63,6 +63,13 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
+/**
+ * REST Controller for managing orders in the Lylac One commerce platform.
+ *
+ * Provides API endpoints for creating, retrieving, and updating orders.
+ * Interacts with OrderFacade, CustomerFacade, and ShoppingCartService to 
+ * orchestrate the order flow and checkout process.
+ */
 @RestController
 @RequestMapping("/api/v1")
 @Api(tags = { "Ordering api (Order Flow Api)" })
@@ -470,6 +477,15 @@ public class OrderApi {
 
 	}
 
+	/**
+	 * Updates the customer information associated with a specific order.
+	 * Requires administrative privileges.
+	 *
+	 * @param id The ID of the order to update
+	 * @param orderCustomer The new customer information to apply to the order
+	 * @param merchantStore The current merchant store
+	 * @param language The current language
+	 */
 	@RequestMapping(value = { "/private/orders/{id}/customer" }, method = RequestMethod.PATCH)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -491,6 +507,15 @@ public class OrderApi {
 		return;
 	}
 
+	/**
+	 * Updates the status of a specific order.
+	 * Requires administrative privileges.
+	 *
+	 * @param id The ID of the order to update
+	 * @param status The new status to apply to the order
+	 * @param merchantStore The current merchant store
+	 * @param language The current language
+	 */
 	@RequestMapping(value = { "/private/orders/{id}/status" }, method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
