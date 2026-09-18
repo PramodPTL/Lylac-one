@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { medicineApi, storeApi, contentApi } from '@/services';
 
-export function useProducts(params) {
+export function useProducts(params = {}) {
   return useQuery({
     queryKey: ['products', params],
     queryFn: () => medicineApi.listProducts(params || {}),

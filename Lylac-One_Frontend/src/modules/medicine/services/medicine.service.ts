@@ -1,13 +1,13 @@
 import api, { fixImageUrl } from '@/lib/api';
 
 // GET /api/v1/products (list)
-type ProductListParams = { page?: number; count?: number; category?: string; manufacturer?: string; keyword?: string };
+type ProductListParams = { page?: number; count?: number; category?: string; manufacturer?: string; name?: string; keyword?: string };
 
-export async function listProducts({ page = 0, count = 24, category, manufacturer, keyword }: ProductListParams = {}) {
+export async function listProducts({ page = 0, count = 24, category, manufacturer, name, keyword }: ProductListParams = {}) {
   const params: Record<string, number | string> = { page, count };
   if (category) params.category = category;
   if (manufacturer) params.manufacturer = manufacturer;
-  if (keyword) params.keyword = keyword;
+  if (name || keyword) params.name = name || keyword;
   const { data } = await api.get('/api/v1/products', { params });
   return {
     total: data?.recordsTotal || 0,
@@ -80,7 +80,7 @@ export async function listReviews(id: string) {
 export function normalizeProduct(p: any) {
   if (!p) return null;
   const desc = p.description || {};
-  const price = p.finalPrice ? parseFloat(String(p.finalPrice).replace(/[^\d.]/g, '')) : p.price;
+  const price = p.finalPrice ? parseFloat(String(p.finalPrice).replace(/[^\d.]/g, '')) : (p.price?.value ?? p.price);
   const mrp = p.originalPrice ? parseFloat(String(p.originalPrice).replace(/[^\d.]/g, '')) : price;
   const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
   return {
@@ -90,7 +90,7 @@ export function normalizeProduct(p: any) {
     name: desc.name || 'Unnamed product',
     brand: p?.manufacturer?.description?.name || p?.manufacturer?.code || '—',
     manufacturer: p?.manufacturer?.description?.name || 'Unknown',
-    image: fixImageUrl(p?.image?.imageUrl) || 'https://images.pexels.com/photos/51929/medications-cure-tablets-pharmacy-51929.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    image: fixImageUrl(p?.image?.imageUrl || p?.image?.path || p?.images?.[0]?.imageUrl || p?.images?.[0]?.path),
     price: price || 0, mrp: mrp || 0, discount,
     rating: p.rating || 4.5,
     reviews: p.ratingCount || 0,
@@ -102,7 +102,7 @@ export function normalizeProduct(p: any) {
     rx: false, // TODO: Backend has no prescription flag; assume false
     category: 'otc',
     concern: null,
-    inStock: (p.quantity ?? 0) > 0 || p.available,
+    inStock: (p.quantity ?? p.inventory?.quantity ?? 0) > 0 || p.available || p.inventory?.available,
     fastDelivery: true,
     isLive: true,
   };

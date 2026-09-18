@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://recognised-klein-rendering-survey.trycloudflare.com';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 export const STORE_CODE = process.env.NEXT_PUBLIC_STORE_CODE || 'DEFAULT';
 
 const api = axios.create({

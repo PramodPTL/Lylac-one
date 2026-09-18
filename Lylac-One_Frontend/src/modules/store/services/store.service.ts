@@ -3,8 +3,10 @@ import api, { fixImageUrl } from '@/lib/api';
 // GET /api/v1/store/{code}
 export async function getStore(code) {
   const { data } = await api.get(`/api/v1/store/${code}`);
+  //const { data } = await api.get(`/api/v1/private/stores?count=10&page=0`);
   return normalizeStore(data);
 }
+//http://localhost:8080/api/v1/private/stores?count=10&page=0
 
 // GET /api/v1/private/stores  -- requires admin auth, may fail for customers
 // Alternative: we know DEFAULT is the only public store.
