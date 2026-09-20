@@ -1465,7 +1465,7 @@ export function AllPharmaciesView({ onBack, onOpenStore }) {
         return parseInt(a.deliveryTime) - parseInt(b.deliveryTime);
       return parseFloat(a.distance) - parseFloat(b.distance);
     });
-  const { StoreCard } = require("../../pharmacy/components/Cards");
+  const { StoreCard } = require("../../store/components/Cards");
   return (
     <div className="pb-24 md:pb-8">
       <div className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
