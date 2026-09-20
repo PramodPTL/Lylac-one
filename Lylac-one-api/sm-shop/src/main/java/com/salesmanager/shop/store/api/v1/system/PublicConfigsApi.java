@@ -17,6 +17,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
+/**
+ * REST API for exposing public system configurations.
+ * 
+ * Provides endpoints for retrieving non-sensitive merchant store configurations,
+ * such as social links and public display settings, accessible without authentication.
+ * Relies on MerchantConfigurationFacade for retrieving data.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class PublicConfigsApi {

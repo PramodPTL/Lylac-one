@@ -49,6 +49,15 @@ import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.tax.taxclass.TaxClass;
 
+/**
+ * Implementation of {@link ProductService} for core product business logic.
+ * 
+ * <p>Responsible for managing the lifecycle of a Product entity, including creation,
+ * updates, deletion, and complex queries (e.g., fetching by category, taxonomy, and filtering).</p>
+ * 
+ * <p>It orchestrates interactions with other domain services (like productImageService, 
+ * productReviewService) to ensure associated entities are properly handled during product operations.</p>
+ */
 @Service("productService")
 public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Product> implements ProductService {
 
@@ -256,6 +265,14 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	
 	
 
+	/**
+	 * Centralized method to save or update a product.
+	 * Handles complex associations like images, ensuring they are synced to the CMS via productImageService.
+	 * 
+	 * @param product the Product entity to save or update
+	 * @return the saved product
+	 * @throws ServiceException if an error occurs during persistence
+	 */
 	private Product saveOrUpdate(Product product) throws ServiceException {
 		Validate.notNull(product, "product cannot be null");
 		Validate.notNull(product.getAvailabilities(), "product must have at least one availability");

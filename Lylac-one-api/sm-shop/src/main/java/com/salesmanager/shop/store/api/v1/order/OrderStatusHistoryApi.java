@@ -34,6 +34,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(tags = { "Order status history api" })
 @SwaggerDefinition(tags = {
 		@Tag(name = "Order status history resource", description = "Related to OrderManagement api") })
+/**
+ * REST API controller for managing order status history.
+ * <p>
+ * This class provides endpoints to list and create order status history entries.
+ * It is responsible for handling HTTP requests, performing authorization checks,
+ * and delegating the business logic to the {@link OrderFacade}.
+ */
 public class OrderStatusHistoryApi {
 
 	@Inject
@@ -42,6 +49,14 @@ public class OrderStatusHistoryApi {
 	@Inject
 	private AuthorizationUtils authorizationUtils;
 
+	/**
+	 * Retrieves the status history for a specific order.
+	 * 
+	 * @param id The ID of the order.
+	 * @param merchantStore The current merchant store context (injected).
+	 * @param language The current language context (injected).
+	 * @return A list of {@link ReadableOrderStatusHistory} representing the order's status history.
+	 */
 	@RequestMapping(value = { "private/orders/{id}/history" }, method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
@@ -56,6 +71,14 @@ public class OrderStatusHistoryApi {
 
 	}
 
+	/**
+	 * Creates a new order status history entry for a specific order.
+	 * 
+	 * @param id The ID of the order.
+	 * @param history The new order status history details to be persisted.
+	 * @param merchantStore The current merchant store context (injected).
+	 * @param language The current language context (injected).
+	 */
 	@RequestMapping(value = { "private/orders/{id}/history" }, method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(httpMethod = "POST", value = "Add order history", notes = "Adds a new status to an order", produces = "application/json", response = Void.class)

@@ -1,0 +1,13 @@
+﻿C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductPropertySetApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductRelationshipApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductReviewApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\product\ProductTypeApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\references\ReferencesApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\search\SearchApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\security\SecurityApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\shipping\ShippingConfigurationApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\shipping\ShippingExpeditionApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\store\MerchantStoreApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\system\ContactApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\system\ModulesApi.java
+C:\Users\itspr\Desktop\Lylac-one\Lylac-one-api\sm-shop\src\main\java\com\salesmanager\shop\store\api\v1\system\OptinApi.java

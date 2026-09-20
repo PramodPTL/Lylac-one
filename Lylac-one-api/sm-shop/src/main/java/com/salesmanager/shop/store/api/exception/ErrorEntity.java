@@ -1,5 +1,9 @@
 package com.salesmanager.shop.store.api.exception;
 
+/**
+ * DTO representing an error response in the API.
+ * Contains an error code and a descriptive message.
+ */
 public class ErrorEntity {
     private String errorCode;
     private String message;

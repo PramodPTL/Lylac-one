@@ -36,12 +36,12 @@ import io.swagger.annotations.Tag;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Tax class management
+ * REST API for tax class management.
  * 
- * @author carlsamson
- *
+ * Provides endpoints for creating, reading, updating, and deleting tax classes
+ * for a specific merchant store. Ensures all operations are scoped to the given tenant.
+ * Uses TaxFacade to delegate business logic.
  */
-
 @RestController
 @RequestMapping(value = "/api/v1")
 @Api(tags = { "Tax class management resource (Tax class management Api)" })
@@ -64,6 +64,7 @@ public class TaxClassApi {
 
 	}
 
+	/** Verify if a tax class code is unique for the given MerchantStore */
 	@GetMapping(value = "/private/tax/class/unique", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Verify if taxClass is unique", notes = "", produces = "application/json", response = ResponseEntity.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
@@ -88,6 +89,7 @@ public class TaxClassApi {
 
 	}
 
+	/** List tax classes for a given MerchantStore with pagination */
 	@GetMapping(value = "/private/tax/class", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "List taxClasses by store", notes = "", produces = "application/json", response = ReadableEntityList.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
@@ -109,6 +111,7 @@ public class TaxClassApi {
 
 	}
 
+	/** Delete a tax class by its ID for a given MerchantStore */
 	@DeleteMapping(value = "/private/tax/class/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "DELETE", value = "Delete tax class", notes = "", produces = "application/json", response = Void.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "String", defaultValue = "DEFAULT"),
