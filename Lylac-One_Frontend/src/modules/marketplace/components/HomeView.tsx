@@ -28,7 +28,12 @@ import {
   SERVICES,
   ARTICLES,
 } from "@/lib/constants/mockData";
-import { useProducts, useLiveStore, useCategories } from "@/hooks/useCatalog";
+import {
+  useProducts,
+  useLiveStore,
+  useCategories,
+  useNearbyStores,
+} from "@/hooks/useCatalog";
 import { STORE_CODE } from "@/lib/api";
 import { storeApi } from "@/services";
 import { useMemo } from "react";
@@ -50,11 +55,19 @@ export function HomeView({
   const liveStoreQ = useLiveStore(STORE_CODE);
   const liveProductsQ = useProducts({ count: 12 });
   const categoriesQ = useCategories();
+  const nearbyStoresQ = useNearbyStores(72.51, 23.03);
 
-  // Merge live pharmacy with mock ones (live pharmacy appears first)
   const pharmacies = useMemo(() => {
-    return liveStoreQ.data ? [liveStoreQ.data] : [];
-  }, [liveStoreQ.data]);
+    const list = [...(nearbyStoresQ.data ?? []), ...(liveStoreQ.data ? [liveStoreQ.data] : [])];
+
+    const seen = new Set();
+    return list.filter((store) => {
+      const key = store?.id || store?.slug || store?.code || store?.name;
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [liveStoreQ.data, nearbyStoresQ.data]);
 
   const liveProducts = liveProductsQ.data?.products || [];
   const featuredMeds = liveProducts;
@@ -63,7 +76,6 @@ export function HomeView({
   return (
     <div className="pb-24 md:pb-0">
       {/* Smaller Hero */}
-
       <section className="relative overflow-hidden">
         <div className="gradient-hero text-white">
           <div className="container py-6 md:py-8">
@@ -134,25 +146,25 @@ export function HomeView({
           </div>
         </div>
       </section>
-
       {/* Nearby Pharmacies — MOVED TO TOP (primary action for hyperlocal marketplace) */}
+
       <SectionHeader
         title={`Choose a pharmacy near ${location.split(",")[0]}`}
         subtitle={
-          liveStoreQ.data
-            ? `${pharmacies.length} pharmacies · Live: ${liveStoreQ.data.name}`
+          nearbyStoresQ.isSuccess
+            ? `${pharmacies.length} pharmacies nearby`
             : "Verified, rated & delivering to your address"
         }
         onSeeAll={() => onNavigate("all-pharmacies")}
-        pillLabel={liveStoreQ.data ? "Live" : "Hyperlocal"}
+        pillLabel="Hyperlocal"
       />
       <section className="container">
-        {liveStoreQ.isLoading ? (
+        {nearbyStoresQ.isLoading ? (
           <SkeletonRow count={4} />
-        ) : liveStoreQ.isError ? (
+        ) : nearbyStoresQ.isError ? (
           <ErrorBlock
-            message="Couldn't load pharmacies"
-            onRetry={() => liveStoreQ.refetch()}
+            message="Couldn't load nearby pharmacies"
+            onRetry={() => nearbyStoresQ.refetch()}
           />
         ) : pharmacies.length === 0 ? (
           <div className="py-12 text-center text-sm text-muted-foreground">
@@ -162,15 +174,14 @@ export function HomeView({
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {pharmacies.slice(0, 6).map((p) => (
               <StoreCard
-                key={p.id}
+                key={p.id || p.slug || p.code}
                 store={p}
-                onClick={() => onOpenStore(p.slug || p.id)}
+                onClick={() => onOpenStore(p.slug || p.id || p.code)}
               />
             ))}
           </div>
         )}
       </section>
-
       {/* Categories */}
       <SectionHeader
         title="Shop by Category"
@@ -204,7 +215,6 @@ export function HomeView({
           </div>
         )}
       </section>
-
       {/* Health Concerns */}
       <SectionHeader
         title="Shop by Health Concern"
@@ -221,7 +231,6 @@ export function HomeView({
           ))}
         </div>
       </section>
-
       {/* Featured Medicines */}
       <SectionHeader
         title="Featured Medicines"
@@ -280,7 +289,6 @@ export function HomeView({
           </>
         )}
       </section>
-
       {/* Healthcare Services */}
       <SectionHeader title="Healthcare Services" subtitle="Beyond medicines" />
       <section className="container">
@@ -306,7 +314,6 @@ export function HomeView({
           })}
         </div>
       </section>
-
       {/* Offers */}
       <SectionHeader title="Offers & Coupons" subtitle="Deals you'll love" />
       <section className="container">
@@ -316,7 +323,6 @@ export function HomeView({
           ))}
         </div>
       </section>
-
       {/* Health Articles */}
       <SectionHeader title="Health Articles" subtitle="From verified experts" />
       <section className="container pb-8">

@@ -4,10 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_PAYMENT_CONFIG")
+@Table(name = "STORE_PAYMENT_CONFIG", schema = "lylac_storefront")
 public class StorePaymentConfig extends StorefrontEntity {
-    private Boolean codEnabled = true, onlinePaymentEnabled = true, upiEnabled = true;
-    private String paymentProvider, configuration;
+    @javax.persistence.Column(name = "COD_ENABLED")
+    private Boolean codEnabled = true;
+    @javax.persistence.Column(name = "ONLINE_PAYMENT_ENABLED")
+    private Boolean onlinePaymentEnabled = true;
+    @javax.persistence.Column(name = "UPI_ENABLED")
+    private Boolean upiEnabled = true;
+    @javax.persistence.Column(name = "PAYMENT_PROVIDER", length = 50)
+    private String paymentProvider;
+    @javax.persistence.Column(name = "CONFIGURATION", columnDefinition = "jsonb")
+    private String configuration;
+    @javax.persistence.Column(name = "IS_ACTIVE")
     private Boolean active = true;
 
     public Boolean getCodEnabled() {

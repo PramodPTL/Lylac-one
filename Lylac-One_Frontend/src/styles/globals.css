@@ -98,3 +98,22 @@ body {
 .gradient-card {
   background: linear-gradient(135deg, rgba(15,118,110,0.05) 0%, rgba(20,184,166,0.08) 100%);
 }
+
+.storefront-theme[data-button-style="square"] button[class*="rounded"] {
+  border-radius: 0.35rem;
+}
+.storefront-theme[data-button-style="pill"] button[class*="rounded"] {
+  border-radius: 9999px;
+}
+.storefront-theme[data-card-style="flat"] .rounded-xl.bg-card {
+  box-shadow: none;
+}
+.storefront-theme[data-card-style="shadow"] .rounded-xl.bg-card {
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1);
+}
+.storefront-theme[data-header-style="minimal"] header {
+  box-shadow: none;
+}
+.storefront-theme[data-header-style="classic"] header {
+  border-bottom: 2px solid var(--pf-primary);
+}

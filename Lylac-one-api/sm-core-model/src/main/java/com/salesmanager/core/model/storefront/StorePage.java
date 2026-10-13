@@ -4,10 +4,23 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_PAGE")
+@Table(name = "STORE_PAGE", schema = "lylac_storefront")
 public class StorePage extends StorefrontEntity {
-    private String pageType, slug, title, description, metaTitle, metaDescription;
+    @javax.persistence.Column(name = "PAGE_TYPE", length = 50)
+    private String pageType;
+    @javax.persistence.Column(name = "SLUG", length = 150)
+    private String slug;
+    @javax.persistence.Column(name = "TITLE", length = 255)
+    private String title;
+    @javax.persistence.Column(name = "DESCRIPTION", columnDefinition = "text")
+    private String description;
+    @javax.persistence.Column(name = "IS_PUBLISHED")
     private Boolean published = false;
+    @javax.persistence.Column(name = "META_TITLE", length = 255)
+    private String metaTitle;
+    @javax.persistence.Column(name = "META_DESCRIPTION", length = 500)
+    private String metaDescription;
+    @javax.persistence.Column(name = "VERSION")
     private Long version = 0L;
 
     public String getPageType() {

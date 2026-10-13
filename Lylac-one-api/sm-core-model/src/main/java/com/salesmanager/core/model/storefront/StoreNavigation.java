@@ -4,12 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_NAVIGATION")
+@Table(name = "STORE_NAVIGATION", schema = "lylac_storefront")
 public class StoreNavigation extends StorefrontEntity {
+    @javax.persistence.Column(name = "PARENT_ID")
     private Long parentId;
-    private String label, url, icon;
+    @javax.persistence.Column(name = "LABEL", length = 100)
+    private String label;
+    @javax.persistence.Column(name = "URL", length = 500)
+    private String url;
+    @javax.persistence.Column(name = "ICON", length = 100)
+    private String icon;
+    @javax.persistence.Column(name = "DISPLAY_ORDER")
     private Integer displayOrder = 0;
-    private Boolean openNewTab = false, active = true;
+    @javax.persistence.Column(name = "OPEN_NEW_TAB")
+    private Boolean openNewTab = false;
+    @javax.persistence.Column(name = "IS_ACTIVE")
+    private Boolean active = true;
 
     public Long getParentId() {
         return parentId;

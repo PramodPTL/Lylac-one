@@ -4,11 +4,23 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_DELIVERY_ZONE")
+@Table(name = "STORE_DELIVERY_ZONE", schema = "lylac_storefront")
 public class StoreDeliveryZone extends StorefrontEntity {
-    private String zoneName, postalCode;
+    @javax.persistence.Column(name = "ZONE_NAME", length = 150)
+    private String zoneName;
+    @javax.persistence.Column(name = "POSTAL_CODE", length = 15)
+    private String postalCode;
+    @javax.persistence.Column(name = "DELIVERY_CHARGE", precision = 15, scale = 2)
     private java.math.BigDecimal deliveryCharge;
-    private Integer estimatedMinutes;
+    @javax.persistence.Column(name = "MINIMUM_ORDER_AMOUNT", precision = 15, scale = 2)
+    private java.math.BigDecimal minimumOrderAmount;
+    @javax.persistence.Column(name = "FREE_DELIVERY_ABOVE", precision = 15, scale = 2)
+    private java.math.BigDecimal freeDeliveryAbove;
+    @javax.persistence.Column(name = "ESTIMATED_DELIVERY_MIN")
+    private Integer estimatedDeliveryMin;
+    @javax.persistence.Column(name = "ESTIMATED_DELIVERY_MAX")
+    private Integer estimatedDeliveryMax;
+    @javax.persistence.Column(name = "IS_ACTIVE")
     private Boolean active = true;
 
     public String getZoneName() {
@@ -35,12 +47,36 @@ public class StoreDeliveryZone extends StorefrontEntity {
         deliveryCharge = value;
     }
 
-    public Integer getEstimatedMinutes() {
-        return estimatedMinutes;
+    public java.math.BigDecimal getMinimumOrderAmount() {
+        return minimumOrderAmount;
     }
 
-    public void setEstimatedMinutes(Integer value) {
-        estimatedMinutes = value;
+    public void setMinimumOrderAmount(java.math.BigDecimal value) {
+        minimumOrderAmount = value;
+    }
+
+    public java.math.BigDecimal getFreeDeliveryAbove() {
+        return freeDeliveryAbove;
+    }
+
+    public void setFreeDeliveryAbove(java.math.BigDecimal value) {
+        freeDeliveryAbove = value;
+    }
+
+    public Integer getEstimatedDeliveryMin() {
+        return estimatedDeliveryMin;
+    }
+
+    public void setEstimatedDeliveryMin(Integer value) {
+        estimatedDeliveryMin = value;
+    }
+
+    public Integer getEstimatedDeliveryMax() {
+        return estimatedDeliveryMax;
+    }
+
+    public void setEstimatedDeliveryMax(Integer value) {
+        estimatedDeliveryMax = value;
     }
 
     public Boolean getActive() {

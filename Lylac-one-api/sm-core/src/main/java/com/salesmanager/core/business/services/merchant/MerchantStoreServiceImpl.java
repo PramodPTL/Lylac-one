@@ -64,6 +64,8 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 		return merchantRepository.listByCriteria(criteria);
 	}
 
+
+
 	@Override
 	public Page<MerchantStore> listChildren(String code, int page, int count) throws ServiceException {
 		Pageable pageRequest = PageRequest.of(page, count);
@@ -76,6 +78,7 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 		if (storeName != null && storeName.isPresent()) {
 			store = storeName.get();
 		}
+
 		Pageable pageRequest = PageRequest.of(page, count);
 		return pageableMerchantRepository.listAll(store, pageRequest);
 
@@ -164,6 +167,11 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 		List<MerchantStore> stores = merchantRepository.listByGroup(code, id.get());
 
 		return stores.size() > 0;
+	}
+
+	@Override
+	public List<MerchantStore> findNearByStore(Double longitude, Double latitude) {
+		return merchantRepository.findNearbyStores(longitude, latitude, 10.0);
 	}
 
 }

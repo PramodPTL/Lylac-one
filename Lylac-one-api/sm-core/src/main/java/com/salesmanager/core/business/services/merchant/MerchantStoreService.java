@@ -45,4 +45,5 @@ public interface MerchantStoreService extends SalesManagerEntityService<Integer,
 	
 	GenericEntityList<MerchantStore> getByCriteria(MerchantStoreCriteria criteria) throws ServiceException;
 
+	List<MerchantStore> findNearByStore(Double longitude, Double latitude);
 }

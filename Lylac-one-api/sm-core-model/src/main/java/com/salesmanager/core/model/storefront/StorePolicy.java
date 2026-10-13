@@ -4,9 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_POLICY")
+@Table(name = "STORE_POLICY", schema = "lylac_storefront")
 public class StorePolicy extends StorefrontEntity {
-    private String policyType, title, content;
+    @javax.persistence.Column(name = "POLICY_TYPE", length = 50)
+    private String policyType;
+    @javax.persistence.Column(name = "TITLE", length = 255)
+    private String title;
+    @javax.persistence.Column(name = "CONTENT", columnDefinition = "text")
+    private String content;
+    @javax.persistence.Column(name = "IS_ACTIVE")
     private Boolean active = true;
 
     public String getPolicyType() {

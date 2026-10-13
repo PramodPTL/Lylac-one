@@ -4,11 +4,28 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_SEO_CONFIG")
+@Table(name = "STORE_SEO_CONFIG", schema = "lylac_storefront")
 public class StoreSeoConfig extends StorefrontEntity {
-    private String metaTitle, metaDescription, metaKeywords, ogTitle, ogDescription, ogImage, canonicalUrl,
-            structuredData;
-    private Boolean robotsIndex = true, robotsFollow = true;
+    @javax.persistence.Column(name = "META_TITLE", length = 255)
+    private String metaTitle;
+    @javax.persistence.Column(name = "META_DESCRIPTION", length = 500)
+    private String metaDescription;
+    @javax.persistence.Column(name = "META_KEYWORDS", columnDefinition = "text")
+    private String metaKeywords;
+    @javax.persistence.Column(name = "OG_TITLE", length = 255)
+    private String ogTitle;
+    @javax.persistence.Column(name = "OG_DESCRIPTION", length = 500)
+    private String ogDescription;
+    @javax.persistence.Column(name = "OG_IMAGE", length = 500)
+    private String ogImage;
+    @javax.persistence.Column(name = "CANONICAL_URL", length = 500)
+    private String canonicalUrl;
+    @javax.persistence.Column(name = "ROBOTS_INDEX")
+    private Boolean robotsIndex = true;
+    @javax.persistence.Column(name = "ROBOTS_FOLLOW")
+    private Boolean robotsFollow = true;
+    @javax.persistence.Column(name = "STRUCTURED_DATA", columnDefinition = "jsonb")
+    private String structuredData;
 
     public String getMetaTitle() {
         return metaTitle;

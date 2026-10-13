@@ -31,3 +31,11 @@ export function useLiveStore(code) {
 export function useContentBoxes() {
   return useQuery({ queryKey: ['content-boxes'], queryFn: contentApi.listContentBoxes });
 }
+
+export function useNearbyStores(latitude: number, longitude: number) {
+  return useQuery({
+    queryKey: ["nearby-stores", latitude, longitude],
+    queryFn: () => storeApi.getNearbyStores(latitude, longitude),
+    enabled: Number.isFinite(latitude) && Number.isFinite(longitude),
+  });
+}

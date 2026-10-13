@@ -19,10 +19,10 @@ public abstract class StorefrontEntity implements Serializable {
     @Column(name = "MERCHANT_ID", nullable = false)
     private Integer merchantId;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATE_CREATED", nullable = false)
+    @Column(name = "DATE_CREATED")
     private Date dateCreated = new Date();
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATE_MODIFIED", nullable = false)
+    @Column(name = "DATE_MODIFIED")
     private Date dateModified = new Date();
     @Column(name = "CREATED_BY")
     private Long createdBy;

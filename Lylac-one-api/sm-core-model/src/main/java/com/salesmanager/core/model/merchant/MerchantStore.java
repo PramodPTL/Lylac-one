@@ -98,9 +98,77 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
     @Column(name = "LINEAGE")
     private String lineage;
 
-	@NotEmpty
-	@Column(name = "STORE_PHONE", length = 50)
-	private String storephone;
+    @Column(name = "STORE_SLUG", length = 150)
+    private String storeSlug;
+
+    @Column(name = "STORE_DESCRIPTION", columnDefinition = "text")
+    private String storeDescription;
+
+    @Column(name = "STORE_SHORT_DESCRIPTION", length = 500)
+    private String storeShortDescription;
+
+    @Column(name = "COVER_IMAGE_URL", length = 500)
+    private String coverImageUrl;
+
+    @Column(name = "FAVICON_URL", length = 500)
+    private String faviconUrl;
+
+    @Column(name = "STATUS", length = 30)
+    private String status;
+
+    @Column(name = "IS_VERIFIED")
+    private Boolean verified = false;
+
+    @Column(name = "IS_FEATURED")
+    private Boolean featured = false;
+
+    @Column(name = "ACCEPTING_ORDERS")
+    private Boolean acceptingOrders = true;
+
+    @Column(name = "LATITUDE", precision = 10, scale = 7)
+    private java.math.BigDecimal latitude;
+
+    @Column(name = "LONGITUDE", precision = 10, scale = 7)
+    private java.math.BigDecimal longitude;
+
+    @Column(name = "GOOGLE_PLACE_ID", length = 255)
+    private String googlePlaceId;
+
+    @Column(name = "SUPPORT_EMAIL", length = 100)
+    private String supportEmail;
+
+    @Column(name = "WHATSAPP_NUMBER", length = 30)
+    private String whatsappNumber;
+
+    @Column(name = "PHARMACY_LICENSE_NUMBER", length = 100)
+    private String pharmacyLicenseNumber;
+
+    @Column(name = "GST_NUMBER", length = 30)
+    private String gstNumber;
+
+    @Column(name = "DRUG_LICENSE_NUMBER", length = 100)
+    private String drugLicenseNumber;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "LICENSE_EXPIRY_DATE")
+    private Date licenseExpiryDate;
+
+    @Column(name = "VERSION")
+    private Long version = 0L;
+
+    @Column(name = "CREATED_BY")
+    private Long createdBy;
+
+    @Column(name = "MODIFIED_BY")
+    private Long modifiedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DELETED_AT")
+    private Date deletedAt;
+
+    @NotEmpty
+    @Column(name = "STORE_PHONE", length = 50)
+    private String storephone;
 
 	@Column(name = "STORE_ADDRESS")
 	private String storeaddress;
@@ -370,6 +438,190 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getLineage() {
+		return lineage;
+	}
+
+	public void setLineage(String lineage) {
+		this.lineage = lineage;
+	}
+
+	public String getStoreSlug() {
+		return storeSlug;
+	}
+
+	public void setStoreSlug(String storeSlug) {
+		this.storeSlug = storeSlug;
+	}
+
+	public String getStoreDescription() {
+		return storeDescription;
+	}
+
+	public void setStoreDescription(String storeDescription) {
+		this.storeDescription = storeDescription;
+	}
+
+	public String getStoreShortDescription() {
+		return storeShortDescription;
+	}
+
+	public void setStoreShortDescription(String storeShortDescription) {
+		this.storeShortDescription = storeShortDescription;
+	}
+
+	public String getCoverImageUrl() {
+		return coverImageUrl;
+	}
+
+	public void setCoverImageUrl(String coverImageUrl) {
+		this.coverImageUrl = coverImageUrl;
+	}
+
+	public String getFaviconUrl() {
+		return faviconUrl;
+	}
+
+	public void setFaviconUrl(String faviconUrl) {
+		this.faviconUrl = faviconUrl;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
+	public Boolean getFeatured() {
+		return featured;
+	}
+
+	public void setFeatured(Boolean featured) {
+		this.featured = featured;
+	}
+
+	public Boolean getAcceptingOrders() {
+		return acceptingOrders;
+	}
+
+	public void setAcceptingOrders(Boolean acceptingOrders) {
+		this.acceptingOrders = acceptingOrders;
+	}
+
+	public java.math.BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(java.math.BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public java.math.BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(java.math.BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getGooglePlaceId() {
+		return googlePlaceId;
+	}
+
+	public void setGooglePlaceId(String googlePlaceId) {
+		this.googlePlaceId = googlePlaceId;
+	}
+
+	public String getSupportEmail() {
+		return supportEmail;
+	}
+
+	public void setSupportEmail(String supportEmail) {
+		this.supportEmail = supportEmail;
+	}
+
+	public String getWhatsappNumber() {
+		return whatsappNumber;
+	}
+
+	public void setWhatsappNumber(String whatsappNumber) {
+		this.whatsappNumber = whatsappNumber;
+	}
+
+	public String getPharmacyLicenseNumber() {
+		return pharmacyLicenseNumber;
+	}
+
+	public void setPharmacyLicenseNumber(String pharmacyLicenseNumber) {
+		this.pharmacyLicenseNumber = pharmacyLicenseNumber;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
+
+	public String getDrugLicenseNumber() {
+		return drugLicenseNumber;
+	}
+
+	public void setDrugLicenseNumber(String drugLicenseNumber) {
+		this.drugLicenseNumber = drugLicenseNumber;
+	}
+
+	public Date getLicenseExpiryDate() {
+		return CloneUtils.clone(licenseExpiryDate);
+	}
+
+	public void setLicenseExpiryDate(Date licenseExpiryDate) {
+		this.licenseExpiryDate = CloneUtils.clone(licenseExpiryDate);
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getDeletedAt() {
+		return CloneUtils.clone(deletedAt);
+	}
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = CloneUtils.clone(deletedAt);
 	}
 
 	public void setDateBusinessSince(String dateBusinessSince) {

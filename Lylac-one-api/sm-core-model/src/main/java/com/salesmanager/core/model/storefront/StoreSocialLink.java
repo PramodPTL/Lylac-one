@@ -4,10 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_SOCIAL_LINK")
+@Table(name = "STORE_SOCIAL_LINK", schema = "lylac_storefront")
 public class StoreSocialLink extends StorefrontEntity {
-    private String platform, url;
+    @javax.persistence.Column(name = "PLATFORM", length = 50)
+    private String platform;
+    @javax.persistence.Column(name = "URL", length = 500)
+    private String url;
+    @javax.persistence.Column(name = "DISPLAY_ORDER")
     private Integer displayOrder = 0;
+    @javax.persistence.Column(name = "IS_ACTIVE")
     private Boolean active = true;
 
     public String getPlatform() {

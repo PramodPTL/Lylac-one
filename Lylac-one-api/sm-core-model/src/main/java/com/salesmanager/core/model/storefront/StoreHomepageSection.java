@@ -4,10 +4,21 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_HOMEPAGE_SECTION")
+@Table(name = "STORE_HOMEPAGE_SECTION", schema = "lylac_storefront")
 public class StoreHomepageSection extends StorefrontEntity {
-    private String sectionType, title, subtitle, imageUrl, configuration;
+    @javax.persistence.Column(name = "SECTION_TYPE", length = 50)
+    private String sectionType;
+    @javax.persistence.Column(name = "TITLE", length = 255)
+    private String title;
+    @javax.persistence.Column(name = "SUBTITLE", length = 500)
+    private String subtitle;
+    @javax.persistence.Column(name = "IMAGE_URL", length = 500)
+    private String imageUrl;
+    @javax.persistence.Column(name = "CONFIGURATION", columnDefinition = "jsonb")
+    private String configuration;
+    @javax.persistence.Column(name = "DISPLAY_ORDER")
     private Integer displayOrder = 0;
+    @javax.persistence.Column(name = "IS_ACTIVE")
     private Boolean active = true;
 
     public String getSectionType() {

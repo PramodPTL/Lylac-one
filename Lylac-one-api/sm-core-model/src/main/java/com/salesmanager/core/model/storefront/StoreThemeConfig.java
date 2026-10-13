@@ -4,10 +4,34 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STORE_THEME_CONFIG")
+@Table(name = "STORE_THEME_CONFIG", schema = "lylac_storefront")
 public class StoreThemeConfig extends StorefrontEntity {
-    private String themeName, primaryColor, secondaryColor, logoUrl, faviconUrl, configuration;
-    private Boolean active = true;
+    @javax.persistence.Column(name = "THEME_NAME", length = 100)
+    private String themeName;
+    @javax.persistence.Column(name = "PRIMARY_COLOR", length = 20)
+    private String primaryColor;
+    @javax.persistence.Column(name = "SECONDARY_COLOR", length = 20)
+    private String secondaryColor;
+    @javax.persistence.Column(name = "ACCENT_COLOR", length = 20)
+    private String accentColor;
+    @javax.persistence.Column(name = "BACKGROUND_COLOR", length = 20)
+    private String backgroundColor;
+    @javax.persistence.Column(name = "TEXT_COLOR", length = 20)
+    private String textColor;
+    @javax.persistence.Column(name = "FONT_FAMILY", length = 100)
+    private String fontFamily;
+    @javax.persistence.Column(name = "BORDER_RADIUS", length = 30)
+    private String borderRadius;
+    @javax.persistence.Column(name = "BUTTON_STYLE", length = 30)
+    private String buttonStyle;
+    @javax.persistence.Column(name = "CARD_STYLE", length = 30)
+    private String cardStyle;
+    @javax.persistence.Column(name = "HEADER_STYLE", length = 30)
+    private String headerStyle;
+    @javax.persistence.Column(name = "FOOTER_STYLE", length = 30)
+    private String footerStyle;
+    @javax.persistence.Column(name = "CUSTOM_CSS", columnDefinition = "text")
+    private String customCss;
 
     public String getThemeName() {
         return themeName;
@@ -33,35 +57,83 @@ public class StoreThemeConfig extends StorefrontEntity {
         secondaryColor = value;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public String getAccentColor() {
+        return accentColor;
     }
 
-    public void setLogoUrl(String value) {
-        logoUrl = value;
+    public void setAccentColor(String value) {
+        accentColor = value;
     }
 
-    public String getFaviconUrl() {
-        return faviconUrl;
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
-    public void setFaviconUrl(String value) {
-        faviconUrl = value;
+    public void setBackgroundColor(String value) {
+        backgroundColor = value;
     }
 
-    public String getConfiguration() {
-        return configuration;
+    public String getTextColor() {
+        return textColor;
     }
 
-    public void setConfiguration(String value) {
-        configuration = value;
+    public void setTextColor(String value) {
+        textColor = value;
     }
 
-    public Boolean getActive() {
-        return active;
+    public String getFontFamily() {
+        return fontFamily;
     }
 
-    public void setActive(Boolean value) {
-        active = value;
+    public void setFontFamily(String value) {
+        fontFamily = value;
+    }
+
+    public String getBorderRadius() {
+        return borderRadius;
+    }
+
+    public void setBorderRadius(String value) {
+        borderRadius = value;
+    }
+
+    public String getButtonStyle() {
+        return buttonStyle;
+    }
+
+    public void setButtonStyle(String value) {
+        buttonStyle = value;
+    }
+
+    public String getCardStyle() {
+        return cardStyle;
+    }
+
+    public void setCardStyle(String value) {
+        cardStyle = value;
+    }
+
+    public String getHeaderStyle() {
+        return headerStyle;
+    }
+
+    public void setHeaderStyle(String value) {
+        headerStyle = value;
+    }
+
+    public String getFooterStyle() {
+        return footerStyle;
+    }
+
+    public void setFooterStyle(String value) {
+        footerStyle = value;
+    }
+
+    public String getCustomCss() {
+        return customCss;
+    }
+
+    public void setCustomCss(String value) {
+        customCss = value;
     }
 }

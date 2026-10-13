@@ -2,19 +2,13 @@ import axios from "axios";
 
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-export const STORE_CODE = process.env.NEXT_PUBLIC_STORE_CODE || "DEFAULT";
+// export const STORE_CODE = process.env.NEXT_PUBLIC_STORE_CODE || "DEFAULT";
+export const STORE_CODE = 1;
 
-// const api = axios.create({
-//   baseURL: API_BASE,
-//   timeout: 20000,
-//   headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-// });
 const api = axios.create({
-  baseURL: "http://localhost:8080",
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: API_BASE,
+  timeout: 20000,
+  headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 });
 
 // Token helpers (client-side only)

@@ -4,8 +4,11 @@ import { storeApi } from "@/services";
 import { STORE_CODE } from "@/lib/api";
 import { StoreStorefront } from "@/modules/store/components/StoreStorefront";
 
+// export async function generateStaticParams() {
+//   return [{ slug: STORE_CODE.toLowerCase() }];
+// }
 export async function generateStaticParams() {
-  return [{ slug: STORE_CODE.toLowerCase() }];
+  return [{ slug: STORE_CODE.toString().toLowerCase() }];
 }
 
 export async function generateMetadata({ params }) {
@@ -18,17 +21,28 @@ export async function generateMetadata({ params }) {
   }
   if (!store) return { title: "Store not found | Lylac One" };
   const details = STORE_DETAILS[store.id];
+  const seo = store.configuration?.seo;
   const description =
+    seo?.metaDescription ||
     details?.description ||
     `Order genuine medicines from ${store.name} delivered fast.`;
-  const title = `${store.name} | Lylac One`;
+  const title = seo?.metaTitle || `${store.name} | Lylac One`;
   return {
     title,
     description,
+    keywords: seo?.metaKeywords,
+    alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
     openGraph: {
-      title,
-      description,
-      images: [{ url: store.image, width: 940, height: 650, alt: store.name }],
+      title: seo?.ogTitle || title,
+      description: seo?.ogDescription || description,
+      images: [
+        {
+          url: seo?.ogImage || store.image,
+          width: 940,
+          height: 650,
+          alt: store.name,
+        },
+      ],
       type: "website",
       siteName: "Lylac One",
     },

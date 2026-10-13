@@ -128,4 +128,5 @@ public interface StoreFacade {
 	 */
 	List<ReadableMerchantStore> getMerchantStoreNames(MerchantStoreCriteria criteria);
 
+	ReadableMerchantStoreList findNearByStore(Double longitude, Double latitude, Language language);
 }
