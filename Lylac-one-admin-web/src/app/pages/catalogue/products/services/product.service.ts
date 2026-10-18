@@ -1,21 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { CrudService } from '../../../shared/services/crud.service';
-import { Observable } from 'rxjs';
-import { StorageService } from '../../../shared/services/storage.service';
-import { UrlTree, UrlSegment, UrlSegmentGroup, ActivatedRoute, Router, PRIMARY_OUTLET } from '@angular/router';
-import {Location} from '@angular/common';
+import { CrudService } from "../../../shared/services/crud.service";
+import { Observable } from "rxjs";
+import { StorageService } from "../../../shared/services/storage.service";
+import {
+  UrlTree,
+  UrlSegment,
+  UrlSegmentGroup,
+  ActivatedRoute,
+  Router,
+  PRIMARY_OUTLET,
+} from "@angular/router";
+import { Location } from "@angular/common";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProductService {
-
   constructor(
     private crudService: CrudService,
     private storageService: StorageService,
-  ) {
-  }
+  ) {}
 
   getListOfProducts(params): Observable<any> {
     //release 3.2.1 use V2
@@ -28,37 +33,39 @@ export class ProductService {
 
   updateProduct(id, product): Observable<any> {
     const params = {
-      store: this.storageService.getMerchant()
+      store: this.storageService.getMerchant(),
     };
-    return this.crudService.put(`/v2/private/product/${id}`, product, { params });
+    return this.crudService.put(`/v2/private/product/${id}`, product, {
+      params,
+    });
   }
 
   getProductById(id): Observable<any> {
     const params = {
-      lang: '_all'
+      lang: "_all",
     };
     return this.crudService.get(`/v1/product/${id}`, params);
   }
 
   getProductDefinitionById(id): Observable<any> {
     const params = {
-      lang: '_all'
+      lang: "_all",
     };
     return this.crudService.get(`/v2/private/product/definition/${id}`, params);
   }
 
   getProductDefinitionBySku(sku): Observable<any> {
     const params = {
-      lang: '_all'
+      lang: "_all",
     };
     return this.crudService.get(`/v2/product/${sku}`, params);
   }
 
   createProduct(product): Observable<any> {
     const params = {
-      store: this.storageService.getMerchant()
+      store: this.storageService.getMerchant(),
     };
-    return this.crudService.post(`/v2/private/product/definition`, product, { params });
+    return this.crudService.post(`/v2/private/product`, product, { params });
   }
 
   deleteProduct(id): Observable<any> {
@@ -71,23 +78,30 @@ export class ProductService {
 
   checkProductSku(code): Observable<any> {
     const params = {
-      'code': code,
+      code: code,
     };
     return this.crudService.get(`/v1/private/product/unique`, params);
   }
 
   addProductToCategory(productId, categoryId): Observable<any> {
-    return this.crudService.post(`/v1/private/product/${productId}/category/${categoryId}`, {});
+    return this.crudService.post(
+      `/v1/private/product/${productId}/category/${categoryId}`,
+      {},
+    );
   }
 
   removeProductFromCategory(productId, categoryId): Observable<any> {
-    return this.crudService.delete(`/v1/private/product/${productId}/category/${categoryId}`);
+    return this.crudService.delete(
+      `/v1/private/product/${productId}/category/${categoryId}`,
+    );
   }
   getProductByOrder(): Observable<any> {
-    return this.crudService.get(`/v1/product?count=200&lang=en&page=0`)
+    return this.crudService.get(`/v1/product?count=200&lang=en&page=0`);
   }
   getProductOrderById(id): Observable<any> {
-    return this.crudService.get(`/v1/product?category=${id}&count=200&lang=en&page=0`)
+    return this.crudService.get(
+      `/v1/product?category=${id}&count=200&lang=en&page=0`,
+    );
   }
   getProductIdRoute(router: Router, location: Location) {
     const tree: UrlTree = router.parseUrl(location.path());
@@ -95,5 +109,4 @@ export class ProductService {
     const s: UrlSegment[] = g.segments; // returns 2 segments
     return s[4].path;
   }
-
 }

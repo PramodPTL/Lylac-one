@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      # Local development can evolve the schema; production schemas must be migration-managed.
+      ddl-auto: update
+  flyway:
+    baseline-on-migrate: true
+
+# DataConfiguration passes this property directly to Hibernate.
+hibernate:
+  hbm2ddl:
+    # Automatic schema updates are restricted to development. Other environments validate
+    # against their migration-managed schema and must never mutate it at startup.
+    auto: update

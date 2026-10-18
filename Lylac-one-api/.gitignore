@@ -31,3 +31,14 @@ sm-shop/src/main/resources/database.properties
 .DS_Store
 
 .mvnw/*.jar
+
+# Keep the PostgreSQL Spring profile configuration under version control.
+!/sm-shop/
+!/sm-shop/src/
+!/sm-shop/src/main/
+!/sm-shop/src/main/resources/
+!/sm-shop/src/main/resources/application-postgres.yml
+!/sm-shop/src/main/resources/application-dev.yml
+!/sm-shop/src/main/resources/db/
+!/sm-shop/src/main/resources/db/migration/
+!/sm-shop/src/main/resources/db/migration/V1__create_application_schemas.sql

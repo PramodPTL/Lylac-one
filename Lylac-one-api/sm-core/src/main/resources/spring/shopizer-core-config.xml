@@ -75,7 +75,7 @@
 		</beans:bean>
 	</beans:beans>
 
-	<beans:beans profile="default">
+	<beans:beans profile="default,postgres,dev">
 		<beans:bean
 			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 			<beans:property name="ignoreUnresolvablePlaceholders"
