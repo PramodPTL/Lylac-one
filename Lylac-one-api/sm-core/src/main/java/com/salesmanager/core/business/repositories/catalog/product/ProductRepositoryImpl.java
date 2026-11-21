@@ -489,7 +489,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		ProductList productList = new ProductList();
 
 		Query countQ = this.em.createQuery(
-				"select count(p) from Product as p INNER JOIN p.availabilities pa INNER JOIN p.categories categs where p.merchantStore.id=:mId and categs.id in (:cid) and pa.region in (:lid) and p.available=1 and p.dateAvailable<=:dt");
+				"select count(p) from Product as p INNER JOIN p.availabilities pa INNER JOIN p.categories categs where p.merchantStore.id=:mId and categs.id in (:cid) and pa.region in (:lid) and p.available=true and p.dateAvailable<=:dt");
 
 		countQ.setParameter("cid", categoryIds);
 		countQ.setParameter("lid", regionList);

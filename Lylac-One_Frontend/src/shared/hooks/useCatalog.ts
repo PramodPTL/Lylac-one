@@ -16,8 +16,12 @@ export function useProduct(slug) {
     enabled: !!slug,
   });
 }
-export function useCategories() {
-  return useQuery({ queryKey: ['categories'], queryFn: medicineApi.listCategories, staleTime: 300_000 });
+export function useCategories(storeCode?: string | number) {
+  return useQuery({
+    queryKey: ["categories", storeCode],
+    queryFn: () => medicineApi.listCategories(storeCode),
+    staleTime: 300_000,
+  });
 }
 export function useManufacturers() {
   return useQuery({ queryKey: ['manufacturers'], queryFn: medicineApi.listManufacturers, staleTime: 300_000 });
@@ -30,4 +34,12 @@ export function useLiveStore(code) {
 }
 export function useContentBoxes() {
   return useQuery({ queryKey: ['content-boxes'], queryFn: contentApi.listContentBoxes });
+}
+
+export function useNearbyStores(latitude: number, longitude: number) {
+  return useQuery({
+    queryKey: ["nearby-stores", latitude, longitude],
+    queryFn: () => storeApi.getNearbyStores(latitude, longitude),
+    enabled: Number.isFinite(latitude) && Number.isFinite(longitude),
+  });
 }

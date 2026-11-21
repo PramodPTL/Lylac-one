@@ -96,9 +96,6 @@ public class CategoryFacadeImpl implements CategoryFacade {
 				returnList.setTotalPages(pageable.getTotalPages());
 				returnList.setNumber(categories.size());
 			}
-
-
-
 			List<ReadableCategory> readableCategories = null;
 			if (filter != null && filter.contains(VISIBLE_CATEGORY)) {
 				readableCategories = categories.stream().filter(Category::isVisible)

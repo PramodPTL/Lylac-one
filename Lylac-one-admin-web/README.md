@@ -14,6 +14,8 @@ npm install --legacy-peer-deps
 
 ng serve -o
 
+npx ng serve -o
+
 http://localhost:4200
 
 ## Build app

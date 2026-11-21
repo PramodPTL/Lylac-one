@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "plugins": [{ "name": "next" }],
-    "baseUrl": ".",
+    // "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
       "@/components/ui/*": ["./src/shared/components/ui/*"],
@@ -30,6 +30,11 @@
       "@/app/*": ["./src/app/*"]
     }
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

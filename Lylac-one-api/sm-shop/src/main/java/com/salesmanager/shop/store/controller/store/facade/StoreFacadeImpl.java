@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.drools.core.util.StringUtils;
@@ -185,6 +186,11 @@ public class StoreFacadeImpl implements StoreFacade {
 		MerchantStore mStore = convertPersistableMerchantStoreToMerchantStore(store, languageService.defaultLanguage());
 		createMerchantStore(mStore);
 
+	}
+
+	@Override
+	public void addNewStore(StoreFrontResponse store) {
+		merchantStoreService.addNewStore(store);
 	}
 
 	private void createMerchantStore(MerchantStore mStore) {
@@ -557,6 +563,8 @@ public class StoreFacadeImpl implements StoreFacade {
 
 	}
 
+
+
 	@Override
 	public List<Language> supportedLanguages(MerchantStore store) {
 		
@@ -579,6 +587,25 @@ public class StoreFacadeImpl implements StoreFacade {
 		}
 		
 		return Collections.emptyList();
+	}
+
+	@Override
+	public ReadableMerchantStoreList findNearByStore(Double longitude, Double latitude, Language language) {
+
+		List<MerchantStore> stores = null;
+		List<ReadableMerchantStore> readableStores = new ArrayList<ReadableMerchantStore>();
+		ReadableMerchantStoreList readableList = new ReadableMerchantStoreList();
+
+		stores = merchantStoreService.findNearByStore(longitude, latitude);
+
+
+			for (MerchantStore store : stores)
+				readableStores.add(convertMerchantStoreToReadableMerchantStore(language, store));
+
+		readableList.setData(readableStores);
+
+		return readableList;
+
 	}
 
 }

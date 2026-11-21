@@ -1,0 +1,56 @@
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/shopizer?currentSchema=salesmanager,lylac_storefront}
+    username: ${DB_USER:${POSTGRES_USER:shopizer}}
+    password: ${DB_PASSWORD:${POSTGRES_PASSWORD:shopizer_dev_password}}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: ${DB_MIN_POOL_SIZE:1}
+      maximum-pool-size: ${DB_MAX_POOL_SIZE:10}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      # PostgreSQL-only profiles validate unless an explicit dev profile overrides this.
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: salesmanager,lylac_storefront
+    default-schema: salesmanager
+    baseline-on-migrate: ${FLYWAY_BASELINE_ON_MIGRATE:false}
+    baseline-version: 0
+    validate-on-migrate: true
+    clean-disabled: true
+
+# DataConfiguration builds its own Hikari datasource and EntityManagerFactory.
+# Keep these compatibility keys aligned with spring.datasource / spring.jpa above.
+db:
+  driverClass: org.postgresql.Driver
+  jdbcUrl: ${DB_URL:jdbc:postgresql://localhost:5432/shopizer?currentSchema=salesmanager,lylac_storefront}
+  user: ${DB_USER:${POSTGRES_USER:shopizer}}
+  password: ${DB_PASSWORD:${POSTGRES_PASSWORD:shopizer_dev_password}}
+  show:
+    sql: false
+  schema: SALESMANAGER
+  preferredTestQuery: SELECT 1
+  minPoolSize: ${DB_MIN_POOL_SIZE:1}
+  maxPoolSize: ${DB_MAX_POOL_SIZE:10}
+
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+  hbm2ddl:
+    # Safer default for any non-development profile.
+    auto: ${HIBERNATE_DDL_AUTO:validate}
+
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari.pool.HikariPool: DEBUG
+    org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator: DEBUG
+    # Hibernate 5 logger; enable manually during troubleshooting only.
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO

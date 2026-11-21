@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS salesmanager;
+CREATE SCHEMA IF NOT EXISTS lylac_storefront;

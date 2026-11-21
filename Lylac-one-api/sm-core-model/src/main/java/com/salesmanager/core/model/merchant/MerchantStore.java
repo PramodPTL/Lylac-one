@@ -5,26 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -38,7 +19,10 @@ import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.currency.Currency;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.reference.zone.Zone;
+import com.salesmanager.core.model.storefront.*;
 import com.salesmanager.core.utils.CloneUtils;
+import lombok.Data;
+import lombok.Getter;
 
 @Entity
 @Table(name = "MERCHANT_STORE",
@@ -98,9 +82,77 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
     @Column(name = "LINEAGE")
     private String lineage;
 
-	@NotEmpty
-	@Column(name = "STORE_PHONE", length = 50)
-	private String storephone;
+    @Column(name = "STORE_SLUG", length = 150)
+    private String storeSlug;
+
+    @Column(name = "STORE_DESCRIPTION", columnDefinition = "text")
+    private String storeDescription;
+
+    @Column(name = "STORE_SHORT_DESCRIPTION", length = 500)
+    private String storeShortDescription;
+
+    @Column(name = "COVER_IMAGE_URL", length = 500)
+    private String coverImageUrl;
+
+    @Column(name = "FAVICON_URL", length = 500)
+    private String faviconUrl;
+
+    @Column(name = "STATUS", length = 30)
+    private String status;
+
+    @Column(name = "IS_VERIFIED")
+    private Boolean verified = false;
+
+    @Column(name = "IS_FEATURED")
+    private Boolean featured = false;
+
+    @Column(name = "ACCEPTING_ORDERS")
+    private Boolean acceptingOrders = true;
+
+    @Column(name = "LATITUDE", precision = 10, scale = 7)
+    private java.math.BigDecimal latitude;
+
+    @Column(name = "LONGITUDE", precision = 10, scale = 7)
+    private java.math.BigDecimal longitude;
+
+    @Column(name = "GOOGLE_PLACE_ID", length = 255)
+    private String googlePlaceId;
+
+    @Column(name = "SUPPORT_EMAIL", length = 100)
+    private String supportEmail;
+
+    @Column(name = "WHATSAPP_NUMBER", length = 30)
+    private String whatsappNumber;
+
+    @Column(name = "PHARMACY_LICENSE_NUMBER", length = 100)
+    private String pharmacyLicenseNumber;
+
+    @Column(name = "GST_NUMBER", length = 30)
+    private String gstNumber;
+
+    @Column(name = "DRUG_LICENSE_NUMBER", length = 100)
+    private String drugLicenseNumber;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "LICENSE_EXPIRY_DATE")
+    private Date licenseExpiryDate;
+
+    @Column(name = "VERSION")
+    private Long version = 0L;
+
+    @Column(name = "CREATED_BY")
+    private Long createdBy;
+
+    @Column(name = "MODIFIED_BY")
+    private Long modifiedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DELETED_AT")
+    private Date deletedAt;
+
+    @NotEmpty
+    @Column(name = "STORE_PHONE", length = 50)
+    private String storephone;
 
 	@Column(name = "STORE_ADDRESS")
 	private String storeaddress;
@@ -372,6 +424,190 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		this.code = code;
 	}
 
+	public String getLineage() {
+		return lineage;
+	}
+
+	public void setLineage(String lineage) {
+		this.lineage = lineage;
+	}
+
+	public String getStoreSlug() {
+		return storeSlug;
+	}
+
+	public void setStoreSlug(String storeSlug) {
+		this.storeSlug = storeSlug;
+	}
+
+	public String getStoreDescription() {
+		return storeDescription;
+	}
+
+	public void setStoreDescription(String storeDescription) {
+		this.storeDescription = storeDescription;
+	}
+
+	public String getStoreShortDescription() {
+		return storeShortDescription;
+	}
+
+	public void setStoreShortDescription(String storeShortDescription) {
+		this.storeShortDescription = storeShortDescription;
+	}
+
+	public String getCoverImageUrl() {
+		return coverImageUrl;
+	}
+
+	public void setCoverImageUrl(String coverImageUrl) {
+		this.coverImageUrl = coverImageUrl;
+	}
+
+	public String getFaviconUrl() {
+		return faviconUrl;
+	}
+
+	public void setFaviconUrl(String faviconUrl) {
+		this.faviconUrl = faviconUrl;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
+	public Boolean getFeatured() {
+		return featured;
+	}
+
+	public void setFeatured(Boolean featured) {
+		this.featured = featured;
+	}
+
+	public Boolean getAcceptingOrders() {
+		return acceptingOrders;
+	}
+
+	public void setAcceptingOrders(Boolean acceptingOrders) {
+		this.acceptingOrders = acceptingOrders;
+	}
+
+	public java.math.BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(java.math.BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public java.math.BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(java.math.BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getGooglePlaceId() {
+		return googlePlaceId;
+	}
+
+	public void setGooglePlaceId(String googlePlaceId) {
+		this.googlePlaceId = googlePlaceId;
+	}
+
+	public String getSupportEmail() {
+		return supportEmail;
+	}
+
+	public void setSupportEmail(String supportEmail) {
+		this.supportEmail = supportEmail;
+	}
+
+	public String getWhatsappNumber() {
+		return whatsappNumber;
+	}
+
+	public void setWhatsappNumber(String whatsappNumber) {
+		this.whatsappNumber = whatsappNumber;
+	}
+
+	public String getPharmacyLicenseNumber() {
+		return pharmacyLicenseNumber;
+	}
+
+	public void setPharmacyLicenseNumber(String pharmacyLicenseNumber) {
+		this.pharmacyLicenseNumber = pharmacyLicenseNumber;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
+
+	public String getDrugLicenseNumber() {
+		return drugLicenseNumber;
+	}
+
+	public void setDrugLicenseNumber(String drugLicenseNumber) {
+		this.drugLicenseNumber = drugLicenseNumber;
+	}
+
+	public Date getLicenseExpiryDate() {
+		return CloneUtils.clone(licenseExpiryDate);
+	}
+
+	public void setLicenseExpiryDate(Date licenseExpiryDate) {
+		this.licenseExpiryDate = CloneUtils.clone(licenseExpiryDate);
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getDeletedAt() {
+		return CloneUtils.clone(deletedAt);
+	}
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = CloneUtils.clone(deletedAt);
+	}
+
 	public void setDateBusinessSince(String dateBusinessSince) {
 		this.dateBusinessSince = dateBusinessSince;
 	}
@@ -424,4 +660,237 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		this.retailer = retailer;
 	}
 
+
+    @OneToOne(
+			mappedBy = "merchantStore",
+			fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private StoreDeliveryConfig deliveryConfig;
+
+	public void setDeliveryConfig(StoreDeliveryConfig deliveryConfig) {
+		this.deliveryConfig = deliveryConfig;
+
+		if (deliveryConfig != null) {
+			deliveryConfig.setMerchantStore(this);
+		}
+	}
+	public StoreDeliveryConfig getDeliveryConfig() {
+		return deliveryConfig;
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreBusinessHours> businessHours = new HashSet<>();
+
+	public Set<StoreBusinessHours> getBusinessHours() {
+		return businessHours;
+	}
+
+	public void setBusinessHours(Set<StoreBusinessHours> businessHours) {
+		this.businessHours = businessHours;
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreDeliveryZone> deliveryZones = new HashSet<>();
+
+	public Set<StoreDeliveryZone> getDeliveryZones() {
+		return deliveryZones;
+	}
+
+	public void setDeliveryZones(Set<StoreDeliveryZone> deliveryZones) {
+		this.deliveryZones = deliveryZones;
+	}
+
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreHomepageSection> homepageSections = new HashSet<>();
+	public Set<StoreHomepageSection> getHomepageSections() {
+		return homepageSections;
+	}
+
+	public void setHomepageSections(Set<StoreHomepageSection> homepageSections) {
+		this.homepageSections = homepageSections;
+	}
+	public void addHomepageSection(StoreHomepageSection section) {
+		homepageSections.add(section);
+		section.setMerchantStore(this);
+	}
+
+	public void removeHomepageSection(StoreHomepageSection section) {
+		homepageSections.remove(section);
+		section.setMerchantStore(null);
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreNavigation> navigations = new HashSet<>();
+	public Set<StoreNavigation> getNavigations() {
+		return navigations;
+	}
+
+	public void setNavigations(Set<StoreNavigation> navigations) {
+		this.navigations = navigations;
+	}
+	public void addNavigation(StoreNavigation navigation) {
+		navigations.add(navigation);
+		navigation.setMerchantStore(this);
+	}
+
+	public void removeNavigation(StoreNavigation navigation) {
+		navigations.remove(navigation);
+		navigation.setMerchantStore(null);
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StorePage> pages = new HashSet<>();
+	public Set<StorePage> getPages() {
+		return pages;
+	}
+
+	public void setPages(Set<StorePage> pages) {
+		this.pages = pages;
+	}
+	public void addPage(StorePage page) {
+		pages.add(page);
+		page.setMerchantStore(this);
+	}
+
+	public void removePage(StorePage page) {
+		pages.remove(page);
+		page.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StorePaymentConfig paymentConfig;
+	public StorePaymentConfig getPaymentConfig() {
+		return paymentConfig;
+	}
+
+	public void setPaymentConfig(StorePaymentConfig paymentConfig) {
+		this.paymentConfig = paymentConfig;
+
+		if (paymentConfig != null) {
+			paymentConfig.setMerchantStore(this);
+		}
+	}
+	public void removePaymentConfig() {
+		if (this.paymentConfig != null) {
+			this.paymentConfig.setMerchantStore(null);
+			this.paymentConfig = null;
+		}
+	}
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StorePolicy> policies = new HashSet<>();
+	public Set<StorePolicy> getPolicies() {
+		return policies;
+	}
+
+	public void setPolicies(Set<StorePolicy> policies) {
+		this.policies = policies;
+	}
+	public void addPolicy(StorePolicy policy) {
+		policies.add(policy);
+		policy.setMerchantStore(this);
+	}
+
+	public void removePolicy(StorePolicy policy) {
+		policies.remove(policy);
+		policy.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StoreSeoConfig seoConfig;
+	public StoreSeoConfig getSeoConfig() {
+		return seoConfig;
+	}
+	public void setSeoConfig(StoreSeoConfig seoConfig) {
+		this.seoConfig = seoConfig;
+
+		if (seoConfig != null) {
+			seoConfig.setMerchantStore(this);
+		}
+	}
+	public void removeSeoConfig() {
+		if (this.seoConfig != null) {
+			this.seoConfig.setMerchantStore(null);
+			this.seoConfig = null;
+		}
+	}
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreSocialLink> socialLinks = new HashSet<>();
+	public Set<StoreSocialLink> getSocialLinks() {
+		return socialLinks;
+	}
+
+	public void setSocialLinks(Set<StoreSocialLink> socialLinks) {
+		this.socialLinks = socialLinks;
+	}
+	public void addSocialLink(StoreSocialLink socialLink) {
+		socialLinks.add(socialLink);
+		socialLink.setMerchantStore(this);
+	}
+
+	public void removeSocialLink(StoreSocialLink socialLink) {
+		socialLinks.remove(socialLink);
+		socialLink.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StoreThemeConfig themeConfig;
+	public StoreThemeConfig getThemeConfig() {
+		return themeConfig;
+	}
+	public void setThemeConfig(StoreThemeConfig themeConfig) {
+		this.themeConfig = themeConfig;
+
+		if (themeConfig != null) {
+			themeConfig.setMerchantStore(this);
+		}
+	}
+	public void removeThemeConfig() {
+		if (this.themeConfig != null) {
+			this.themeConfig.setMerchantStore(null);
+			this.themeConfig = null;
+		}
+	}
 }

@@ -1,10 +1,12 @@
 import '../styles/globals.css';
-import { Toaster } from '@/components/ui/sonner';
-import { Providers } from '@/providers/Providers';
+
+import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/providers/Providers";
 
 export const metadata = {
-  title: 'Lylac One — Your Neighbourhood Pharmacy, Delivered',
-  description: 'Order medicines from nearby pharmacies. Fast delivery, verified stores, and trusted healthcare — all in one app.',
+  title: "Lylac One — Your Neighbourhood Pharmacy, Delivered",
+  description:
+    "Order medicines from nearby pharmacies. Fast delivery, verified stores, and trusted healthcare — all in one app.",
 };
 
 export default function RootLayout({ children }) {

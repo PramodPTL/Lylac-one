@@ -75,7 +75,7 @@ public class DataConfiguration {
     	.build();
     	
     	/** Datasource config **/
-    	dataSource.setIdleTimeout(minPoolSize);
+		dataSource.setMinimumIdle(minPoolSize);
     	dataSource.setMaximumPoolSize(maxPoolSize);
     	dataSource.setConnectionTestQuery(testQuery);
     	

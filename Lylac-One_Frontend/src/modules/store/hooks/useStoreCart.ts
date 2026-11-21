@@ -10,6 +10,11 @@ export function useStoreCart(store: any) {
   const [pendingItem, setPendingItem] = useState<{ medicine: any; delta: number } | null>(null);
 
   const addToCart = (medicine: any, delta: number) => {
+    if (delta > 0 && store.acceptingOrders === false) {
+      toast.error(`${store.name} is not currently accepting orders`);
+      return;
+    }
+
     if (delta > 0 && currentStoreId && currentStoreId !== store.id && cart.length > 0) {
       setPendingItem({ medicine, delta });
       return;
@@ -39,6 +44,11 @@ export function useStoreCart(store: any) {
 
   const confirmSwitch = () => {
     if (!pendingItem) return;
+    if (store.acceptingOrders === false) {
+      toast.error(`${store.name} is not currently accepting orders`);
+      setPendingItem(null);
+      return;
+    }
     setCart([{ ...pendingItem.medicine, qty: pendingItem.delta, storeId: store.id, storeName: store.name }]);
     setCurrentStoreId(store.id);
     toast.success(`Switched to ${store.name}.`);

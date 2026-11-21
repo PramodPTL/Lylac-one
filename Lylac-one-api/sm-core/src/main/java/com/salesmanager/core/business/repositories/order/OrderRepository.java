@@ -1,11 +1,12 @@
 package com.salesmanager.core.business.repositories.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.salesmanager.core.model.order.Order;
 
-public interface OrderRepository extends JpaRepository<Order, Long>, OrderRepositoryCustom {
+public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order>, OrderRepositoryCustom {
 
     @Query("select o from Order o join fetch o.merchant om "
     		+ "join fetch o.orderProducts op "

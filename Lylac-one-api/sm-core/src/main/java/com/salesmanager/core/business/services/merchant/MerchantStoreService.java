@@ -3,6 +3,8 @@ package com.salesmanager.core.business.services.merchant;
 import java.util.List;
 
 import java.util.Optional;
+
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import org.springframework.data.domain.Page;
 
 import com.salesmanager.core.business.exception.ServiceException;
@@ -45,4 +47,7 @@ public interface MerchantStoreService extends SalesManagerEntityService<Integer,
 	
 	GenericEntityList<MerchantStore> getByCriteria(MerchantStoreCriteria criteria) throws ServiceException;
 
+	List<MerchantStore> findNearByStore(Double longitude, Double latitude);
+
+    void addNewStore(StoreFrontResponse store);
 }

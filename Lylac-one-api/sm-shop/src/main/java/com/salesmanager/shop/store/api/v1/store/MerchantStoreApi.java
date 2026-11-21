@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -76,7 +77,7 @@ public class MerchantStoreApi {
 	@Inject
 	private UserFacade userFacade;
 
-	@GetMapping(value = { "/store/{code}" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = { "/merchant/store/{code}" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get merchant store", notes = "", response = ReadableMerchantStore.class)
 	public ReadableMerchantStore store(@PathVariable String code,
 			@RequestParam(value = "lang", required = false) String lang) {
@@ -222,6 +223,23 @@ public class MerchantStoreApi {
 
 		
 		storeFacade.create(store);
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = { "/store" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", value = "Creates a new store", notes = "", response = ReadableMerchantStore.class)
+	public void addNewStore(@Valid @RequestBody StoreFrontResponse store) {
+
+//
+//		String authenticatedUser = userFacade.authenticatedUser();
+//		if (authenticatedUser == null) {
+//			throw new UnauthorizedException();
+//		}
+//
+//		userFacade.authorizedGroup(authenticatedUser, Stream.of("SUPERADMIN", "ADMIN_RETAILER").collect(Collectors.toList()));
+
+
+		storeFacade.addNewStore(store);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -372,6 +390,24 @@ public class MerchantStoreApi {
 		}
 
 	}
+
+
+    @ResponseStatus(HttpStatus.OK)
+	@GetMapping(value = { "/nearbyStore"}, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "GET", value = "Get list of all nearby store for location/user.", notes ="", response = ReadableMerchantStore.class)
+	@ApiImplicitParams({@ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en")})
+	public ReadableMerchantStoreList getNearByStore(@ApiIgnore MerchantStore merchantStore,
+										 @ApiIgnore Language language,
+										 @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+										 @RequestParam(value = "count", required = false, defaultValue = "10") Integer count,
+										 @RequestParam(value = "longitude",  required = false) Double longitude,
+										 @RequestParam(value = "latitude", required = false) Double latitude,
+										 HttpServletRequest request){
+
+		ReadableMerchantStoreList readable = storeFacade.findNearByStore(longitude, latitude, language);
+		return readable;
+	}
+
 
 
 }

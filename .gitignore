@@ -33,3 +33,6 @@ sm-shop/src/main/resources/database.properties
 .mvnw/*.jar
 .idea/
 .vscode/
+!Lylac-one-api/.vscode/
+Lylac-one-api/.vscode/*
+!Lylac-one-api/.vscode/launch.json
