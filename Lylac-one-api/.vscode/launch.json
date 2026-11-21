@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+
+    {
+      "type": "java",
+      "name": "Debug Shop API",
+      "request": "launch",
+      "mainClass": "com.salesmanager.shop.application.ShopApplication",
+      "projectName": "sm-shop",
+      "cwd": "${workspaceFolder}\\sm-shop",
+      "console": "integratedTerminal"
+    }
+  ]
+}
