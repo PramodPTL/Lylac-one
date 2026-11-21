@@ -2,27 +2,27 @@ package com.salesmanager.core.model.storefront;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
+import javax.persistence.*;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 @Entity
-@Table(name = "STORE_PAGE_SECTION", schema = "lylac_storefront")
-public class StorePageSection implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(
+        name = "STORE_PAGE_SECTION",
+        schema = "lylac_storefront",
+        indexes = {
+                @Index(
+                        name = "IDX_PAGE_SECTION_PAGE",
+                        columnList = "PAGE_ID"
+                )
+        }
+)
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+public class StorePageSection extends StorefrontEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "PAGE_ID", nullable = false)
-    private Long pageId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "PAGE_ID", nullable = false)
+    private StorePage page;
 
     @Column(name = "SECTION_TYPE", length = 50)
     private String sectionType;
@@ -39,42 +39,22 @@ public class StorePageSection implements Serializable {
     @Column(name = "CONTENT", columnDefinition = "text")
     private String content;
 
+    @Type(type = "jsonb")
     @Column(name = "CONFIGURATION", columnDefinition = "jsonb")
     private String configuration;
 
-    @Column(name = "DISPLAY_ORDER")
+    @Column(name = "DISPLAY_ORDER", nullable = false)
     private Integer displayOrder = 0;
 
-    @Column(name = "IS_ACTIVE")
-    private Boolean active = true;
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private boolean active = true;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATE_CREATED")
-    private Date dateCreated;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATE_MODIFIED")
-    private Date dateModified;
-
-    @Column(name = "CREATED_BY")
-    private Long createdBy;
-
-    @Column(name = "MODIFIED_BY")
-    private Long modifiedBy;
-
-    @Column(name = "UPDT_ID", length = 60)
-    private String updtId;
-
-    public Long getId() {
-        return id;
+    public StorePage getPage() {
+        return page;
     }
 
-    public Long getPageId() {
-        return pageId;
-    }
-
-    public void setPageId(Long pageId) {
-        this.pageId = pageId;
+    public void setPage(StorePage page) {
+        this.page = page;
     }
 
     public String getSectionType() {
@@ -133,31 +113,11 @@ public class StorePageSection implements Serializable {
         this.displayOrder = displayOrder;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public Date getDateModified() {
-        return dateModified;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public Long getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public String getUpdtId() {
-        return updtId;
     }
 }

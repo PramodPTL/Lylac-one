@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import org.jsoup.helper.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,11 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	// @CacheEvict(value="store", key="#store.code")
 	public void saveOrUpdate(MerchantStore store) throws ServiceException {
 		super.save(store);
+	}
+
+	@Override
+	public void addNewStore(StoreFrontResponse store) {
+
 	}
 
 	@Override
@@ -173,5 +179,7 @@ public class MerchantStoreServiceImpl extends SalesManagerEntityServiceImpl<Inte
 	public List<MerchantStore> findNearByStore(Double longitude, Double latitude) {
 		return merchantRepository.findNearbyStores(longitude, latitude, 10.0);
 	}
+
+
 
 }

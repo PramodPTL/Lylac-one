@@ -10,6 +10,7 @@ import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.model.generic.SalesManagerEntity;
 
 
+
 public abstract class SalesManagerEntityServiceImpl<K extends Serializable & Comparable<K>, E extends SalesManagerEntity<K, ?>>
 	implements SalesManagerEntityService<K, E> {
 	

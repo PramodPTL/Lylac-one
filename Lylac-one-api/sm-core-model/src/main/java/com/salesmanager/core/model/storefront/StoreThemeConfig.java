@@ -1,139 +1,184 @@
 package com.salesmanager.core.model.storefront;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.salesmanager.core.model.merchant.MerchantStore;
+
 @Entity
-@Table(name = "STORE_THEME_CONFIG", schema = "lylac_storefront")
+@Table(
+        name = "STORE_THEME_CONFIG",
+        schema = "lylac_storefront",
+        indexes = {
+                @Index(
+                        name = "IDX_THEME_CONFIG_STORE",
+                        columnList = "MERCHANT_ID"
+                )
+        }
+)
 public class StoreThemeConfig extends StorefrontEntity {
-    @javax.persistence.Column(name = "THEME_NAME", length = 100)
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "MERCHANT_ID",
+            nullable = false,
+            unique = true
+    )
+    private MerchantStore merchantStore;
+
+    @Column(name = "THEME_NAME", length = 100)
     private String themeName;
-    @javax.persistence.Column(name = "PRIMARY_COLOR", length = 20)
+
+    @Column(name = "PRIMARY_COLOR", length = 20)
     private String primaryColor;
-    @javax.persistence.Column(name = "SECONDARY_COLOR", length = 20)
+
+    @Column(name = "SECONDARY_COLOR", length = 20)
     private String secondaryColor;
-    @javax.persistence.Column(name = "ACCENT_COLOR", length = 20)
+
+    @Column(name = "ACCENT_COLOR", length = 20)
     private String accentColor;
-    @javax.persistence.Column(name = "BACKGROUND_COLOR", length = 20)
+
+    @Column(name = "BACKGROUND_COLOR", length = 20)
     private String backgroundColor;
-    @javax.persistence.Column(name = "TEXT_COLOR", length = 20)
+
+    @Column(name = "TEXT_COLOR", length = 20)
     private String textColor;
-    @javax.persistence.Column(name = "FONT_FAMILY", length = 100)
+
+    @Column(name = "FONT_FAMILY", length = 100)
     private String fontFamily;
-    @javax.persistence.Column(name = "BORDER_RADIUS", length = 30)
+
+    @Column(name = "BORDER_RADIUS", length = 30)
     private String borderRadius;
-    @javax.persistence.Column(name = "BUTTON_STYLE", length = 30)
+
+    @Column(name = "BUTTON_STYLE", length = 30)
     private String buttonStyle;
-    @javax.persistence.Column(name = "CARD_STYLE", length = 30)
+
+    @Column(name = "CARD_STYLE", length = 30)
     private String cardStyle;
-    @javax.persistence.Column(name = "HEADER_STYLE", length = 30)
+
+    @Column(name = "HEADER_STYLE", length = 30)
     private String headerStyle;
-    @javax.persistence.Column(name = "FOOTER_STYLE", length = 30)
+
+    @Column(name = "FOOTER_STYLE", length = 30)
     private String footerStyle;
-    @javax.persistence.Column(name = "CUSTOM_CSS", columnDefinition = "text")
+
+    @Column(name = "CUSTOM_CSS", columnDefinition = "text")
     private String customCss;
+
+    public MerchantStore getMerchantStore() {
+        return merchantStore;
+    }
+
+    public void setMerchantStore(MerchantStore merchantStore) {
+        this.merchantStore = merchantStore;
+    }
 
     public String getThemeName() {
         return themeName;
     }
 
-    public void setThemeName(String value) {
-        themeName = value;
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 
     public String getPrimaryColor() {
         return primaryColor;
     }
 
-    public void setPrimaryColor(String value) {
-        primaryColor = value;
+    public void setPrimaryColor(String primaryColor) {
+        this.primaryColor = primaryColor;
     }
 
     public String getSecondaryColor() {
         return secondaryColor;
     }
 
-    public void setSecondaryColor(String value) {
-        secondaryColor = value;
+    public void setSecondaryColor(String secondaryColor) {
+        this.secondaryColor = secondaryColor;
     }
 
     public String getAccentColor() {
         return accentColor;
     }
 
-    public void setAccentColor(String value) {
-        accentColor = value;
+    public void setAccentColor(String accentColor) {
+        this.accentColor = accentColor;
     }
 
     public String getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void setBackgroundColor(String value) {
-        backgroundColor = value;
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
     public String getTextColor() {
         return textColor;
     }
 
-    public void setTextColor(String value) {
-        textColor = value;
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
     }
 
     public String getFontFamily() {
         return fontFamily;
     }
 
-    public void setFontFamily(String value) {
-        fontFamily = value;
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
     }
 
     public String getBorderRadius() {
         return borderRadius;
     }
 
-    public void setBorderRadius(String value) {
-        borderRadius = value;
+    public void setBorderRadius(String borderRadius) {
+        this.borderRadius = borderRadius;
     }
 
     public String getButtonStyle() {
         return buttonStyle;
     }
 
-    public void setButtonStyle(String value) {
-        buttonStyle = value;
+    public void setButtonStyle(String buttonStyle) {
+        this.buttonStyle = buttonStyle;
     }
 
     public String getCardStyle() {
         return cardStyle;
     }
 
-    public void setCardStyle(String value) {
-        cardStyle = value;
+    public void setCardStyle(String cardStyle) {
+        this.cardStyle = cardStyle;
     }
 
     public String getHeaderStyle() {
         return headerStyle;
     }
 
-    public void setHeaderStyle(String value) {
-        headerStyle = value;
+    public void setHeaderStyle(String headerStyle) {
+        this.headerStyle = headerStyle;
     }
 
     public String getFooterStyle() {
         return footerStyle;
     }
 
-    public void setFooterStyle(String value) {
-        footerStyle = value;
+    public void setFooterStyle(String footerStyle) {
+        this.footerStyle = footerStyle;
     }
 
     public String getCustomCss() {
         return customCss;
     }
 
-    public void setCustomCss(String value) {
-        customCss = value;
+    public void setCustomCss(String customCss) {
+        this.customCss = customCss;
     }
 }

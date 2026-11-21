@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.salesmanager.core.modules.integration.payment.model.PaymentModule;
-import com.salesmanager.core.modules.integration.shipping.model.ShippingQuoteModule;
 
 /**
  * Contains injection of external shopizer starter modules
@@ -22,14 +21,6 @@ public class ModulesConfiguration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModulesConfiguration.class);
 	
 	
-	/**
-	 * Goes along with
-	 * shipping-canadapost-spring-boot-starter
-	 */
-    @Autowired
-    private ShippingQuoteModule canadapost;
-    
-    
     /**
      * All living modules exposed here
      */

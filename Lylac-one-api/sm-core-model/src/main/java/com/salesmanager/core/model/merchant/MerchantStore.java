@@ -5,26 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -38,7 +19,10 @@ import com.salesmanager.core.model.reference.country.Country;
 import com.salesmanager.core.model.reference.currency.Currency;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.reference.zone.Zone;
+import com.salesmanager.core.model.storefront.*;
 import com.salesmanager.core.utils.CloneUtils;
+import lombok.Data;
+import lombok.Getter;
 
 @Entity
 @Table(name = "MERCHANT_STORE",
@@ -676,4 +660,237 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 		this.retailer = retailer;
 	}
 
+
+    @OneToOne(
+			mappedBy = "merchantStore",
+			fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private StoreDeliveryConfig deliveryConfig;
+
+	public void setDeliveryConfig(StoreDeliveryConfig deliveryConfig) {
+		this.deliveryConfig = deliveryConfig;
+
+		if (deliveryConfig != null) {
+			deliveryConfig.setMerchantStore(this);
+		}
+	}
+	public StoreDeliveryConfig getDeliveryConfig() {
+		return deliveryConfig;
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreBusinessHours> businessHours = new HashSet<>();
+
+	public Set<StoreBusinessHours> getBusinessHours() {
+		return businessHours;
+	}
+
+	public void setBusinessHours(Set<StoreBusinessHours> businessHours) {
+		this.businessHours = businessHours;
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreDeliveryZone> deliveryZones = new HashSet<>();
+
+	public Set<StoreDeliveryZone> getDeliveryZones() {
+		return deliveryZones;
+	}
+
+	public void setDeliveryZones(Set<StoreDeliveryZone> deliveryZones) {
+		this.deliveryZones = deliveryZones;
+	}
+
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreHomepageSection> homepageSections = new HashSet<>();
+	public Set<StoreHomepageSection> getHomepageSections() {
+		return homepageSections;
+	}
+
+	public void setHomepageSections(Set<StoreHomepageSection> homepageSections) {
+		this.homepageSections = homepageSections;
+	}
+	public void addHomepageSection(StoreHomepageSection section) {
+		homepageSections.add(section);
+		section.setMerchantStore(this);
+	}
+
+	public void removeHomepageSection(StoreHomepageSection section) {
+		homepageSections.remove(section);
+		section.setMerchantStore(null);
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreNavigation> navigations = new HashSet<>();
+	public Set<StoreNavigation> getNavigations() {
+		return navigations;
+	}
+
+	public void setNavigations(Set<StoreNavigation> navigations) {
+		this.navigations = navigations;
+	}
+	public void addNavigation(StoreNavigation navigation) {
+		navigations.add(navigation);
+		navigation.setMerchantStore(this);
+	}
+
+	public void removeNavigation(StoreNavigation navigation) {
+		navigations.remove(navigation);
+		navigation.setMerchantStore(null);
+	}
+
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StorePage> pages = new HashSet<>();
+	public Set<StorePage> getPages() {
+		return pages;
+	}
+
+	public void setPages(Set<StorePage> pages) {
+		this.pages = pages;
+	}
+	public void addPage(StorePage page) {
+		pages.add(page);
+		page.setMerchantStore(this);
+	}
+
+	public void removePage(StorePage page) {
+		pages.remove(page);
+		page.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StorePaymentConfig paymentConfig;
+	public StorePaymentConfig getPaymentConfig() {
+		return paymentConfig;
+	}
+
+	public void setPaymentConfig(StorePaymentConfig paymentConfig) {
+		this.paymentConfig = paymentConfig;
+
+		if (paymentConfig != null) {
+			paymentConfig.setMerchantStore(this);
+		}
+	}
+	public void removePaymentConfig() {
+		if (this.paymentConfig != null) {
+			this.paymentConfig.setMerchantStore(null);
+			this.paymentConfig = null;
+		}
+	}
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StorePolicy> policies = new HashSet<>();
+	public Set<StorePolicy> getPolicies() {
+		return policies;
+	}
+
+	public void setPolicies(Set<StorePolicy> policies) {
+		this.policies = policies;
+	}
+	public void addPolicy(StorePolicy policy) {
+		policies.add(policy);
+		policy.setMerchantStore(this);
+	}
+
+	public void removePolicy(StorePolicy policy) {
+		policies.remove(policy);
+		policy.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StoreSeoConfig seoConfig;
+	public StoreSeoConfig getSeoConfig() {
+		return seoConfig;
+	}
+	public void setSeoConfig(StoreSeoConfig seoConfig) {
+		this.seoConfig = seoConfig;
+
+		if (seoConfig != null) {
+			seoConfig.setMerchantStore(this);
+		}
+	}
+	public void removeSeoConfig() {
+		if (this.seoConfig != null) {
+			this.seoConfig.setMerchantStore(null);
+			this.seoConfig = null;
+		}
+	}
+	@OneToMany(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private Set<StoreSocialLink> socialLinks = new HashSet<>();
+	public Set<StoreSocialLink> getSocialLinks() {
+		return socialLinks;
+	}
+
+	public void setSocialLinks(Set<StoreSocialLink> socialLinks) {
+		this.socialLinks = socialLinks;
+	}
+	public void addSocialLink(StoreSocialLink socialLink) {
+		socialLinks.add(socialLink);
+		socialLink.setMerchantStore(this);
+	}
+
+	public void removeSocialLink(StoreSocialLink socialLink) {
+		socialLinks.remove(socialLink);
+		socialLink.setMerchantStore(null);
+	}
+	@OneToOne(
+			mappedBy = "merchantStore",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private StoreThemeConfig themeConfig;
+	public StoreThemeConfig getThemeConfig() {
+		return themeConfig;
+	}
+	public void setThemeConfig(StoreThemeConfig themeConfig) {
+		this.themeConfig = themeConfig;
+
+		if (themeConfig != null) {
+			themeConfig.setMerchantStore(this);
+		}
+	}
+	public void removeThemeConfig() {
+		if (this.themeConfig != null) {
+			this.themeConfig.setMerchantStore(null);
+			this.themeConfig = null;
+		}
+	}
 }

@@ -1,14 +1,31 @@
-import api, { fixImageUrl } from '@/lib/api';
+import api, { fixImageUrl } from "@/lib/api";
 
 // GET /api/v1/products (list)
-type ProductListParams = { page?: number; count?: number; category?: string; manufacturer?: string; name?: string; keyword?: string };
+type ProductListParams = {
+  page?: number;
+  count?: number;
+  store?: string | number;
+  category?: string;
+  manufacturer?: string;
+  name?: string;
+  keyword?: string;
+};
 
-export async function listProducts({ page = 0, count = 24, category, manufacturer, name, keyword }: ProductListParams = {}) {
+export async function listProducts({
+  page = 0,
+  count = 24,
+  store,
+  category,
+  manufacturer,
+  name,
+  keyword,
+}: ProductListParams = {}) {
   const params: Record<string, number | string> = { page, count };
+  if (store !== undefined) params.store = store;
   if (category) params.category = category;
   if (manufacturer) params.manufacturer = manufacturer;
   if (name || keyword) params.name = name || keyword;
-  const { data } = await api.get('/api/v1/products', { params });
+  const { data } = await api.get("/api/v1/products", { params });
   return {
     total: data?.recordsTotal || 0,
     totalPages: data?.totalPages || 1,
@@ -19,7 +36,9 @@ export async function listProducts({ page = 0, count = 24, category, manufacture
 
 // GET /api/v1/product/{friendlyUrl}
 export async function getProduct(friendlyUrl: string) {
-  const { data } = await api.get(`/api/v1/product/${encodeURIComponent(friendlyUrl)}`);
+  const { data } = await api.get(
+    `/api/v1/product/${encodeURIComponent(friendlyUrl)}`,
+  );
   return normalizeProduct(data);
 }
 
@@ -27,29 +46,45 @@ export async function getProduct(friendlyUrl: string) {
 export async function getRelated(id: string) {
   try {
     const { data } = await api.get(`/api/v1/product/${id}/related`);
-    return (Array.isArray(data) ? data : (data?.products || [])).map(normalizeProduct);
-  } catch { return []; }
+    return (Array.isArray(data) ? data : data?.products || []).map(
+      normalizeProduct,
+    );
+  } catch {
+    return [];
+  }
 }
 
 // POST /api/v1/search
-export async function searchProducts({ query, count = 20 }: { query?: string; count?: number } = {}) {
+export async function searchProducts({
+  query,
+  count = 20,
+}: { query?: string; count?: number } = {}) {
   try {
-    const { data } = await api.post('/api/v1/search', { query, count });
-    return { products: (data?.products || []).map(normalizeProduct), total: data?.count || 0 };
-  } catch { return { products: [], total: 0 }; }
+    const { data } = await api.post("/api/v1/search", { query, count });
+    return {
+      products: (data?.products || []).map(normalizeProduct),
+      total: data?.count || 0,
+    };
+  } catch {
+    return { products: [], total: 0 };
+  }
 }
 
 // POST /api/v1/search/autocomplete
 export async function autocomplete(query: string) {
   try {
-    const { data } = await api.post('/api/v1/search/autocomplete', { query });
+    const { data } = await api.post("/api/v1/search/autocomplete", { query });
     return data?.values || [];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 }
 
 // GET /api/v1/category (list)
-export async function listCategories() {
-  const { data } = await api.get('/api/v1/category');
+export async function listCategories(storeCode?: string | number) {
+  const { data } = await api.get("/api/v1/category", {
+    params: storeCode !== undefined ? { store: storeCode } : undefined,
+  });
   const arr: any[] = data?.categories || data?.list || [];
   return arr.map((c: any) => ({
     id: c.id,
@@ -64,45 +99,67 @@ export async function listCategories() {
 // GET /api/v1/manufacturers
 export async function listManufacturers() {
   try {
-    const { data } = await api.get('/api/v1/manufacturers');
-    return (data?.manufacturers || []).map((m: any) => ({ id: m.id, code: m.code, name: m?.description?.name || m.code }));
-  } catch { return []; }
+    const { data } = await api.get("/api/v1/manufacturers");
+    return (data?.manufacturers || []).map((m: any) => ({
+      id: m.id,
+      code: m.code,
+      name: m?.description?.name || m.code,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 // GET /api/v1/product/{id}/reviews
 export async function listReviews(id: string) {
   try {
     const { data } = await api.get(`/api/v1/product/${id}/reviews`);
-    return Array.isArray(data) ? data : (data?.reviews || []);
-  } catch { return []; }
+    return Array.isArray(data) ? data : data?.reviews || [];
+  } catch {
+    return [];
+  }
 }
 
 export function normalizeProduct(p: any) {
   if (!p) return null;
   const desc = p.description || {};
-  const price = p.finalPrice ? parseFloat(String(p.finalPrice).replace(/[^\d.]/g, '')) : (p.price?.value ?? p.price);
-  const mrp = p.originalPrice ? parseFloat(String(p.originalPrice).replace(/[^\d.]/g, '')) : price;
+  const price = p.finalPrice
+    ? parseFloat(String(p.finalPrice).replace(/[^\d.]/g, ""))
+    : (p.price?.value ?? p.price);
+  const mrp = p.originalPrice
+    ? parseFloat(String(p.originalPrice).replace(/[^\d.]/g, ""))
+    : price;
   const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
   return {
     id: p.id,
     sku: p.sku,
     slug: desc.friendlyUrl || `product-${p.id}`,
-    name: desc.name || 'Unnamed product',
-    brand: p?.manufacturer?.description?.name || p?.manufacturer?.code || '—',
-    manufacturer: p?.manufacturer?.description?.name || 'Unknown',
-    image: fixImageUrl(p?.image?.imageUrl || p?.image?.path || p?.images?.[0]?.imageUrl || p?.images?.[0]?.path),
-    price: price || 0, mrp: mrp || 0, discount,
+    name: desc.name || "Unnamed product",
+    brand: p?.manufacturer?.description?.name || p?.manufacturer?.code || "—",
+    manufacturer: p?.manufacturer?.description?.name || "Unknown",
+    image: fixImageUrl(
+      p?.image?.imageUrl ||
+        p?.image?.path ||
+        p?.images?.[0]?.imageUrl ||
+        p?.images?.[0]?.path,
+    ),
+    price: price || 0,
+    mrp: mrp || 0,
+    discount,
     rating: p.rating || 4.5,
     reviews: p.ratingCount || 0,
-    pack: p.productSpecifications?.dimensions ? '' : (desc.title || ''),
-    composition: desc.description || '',
-    uses: desc.metaDescription || desc.description || '',
-    dosage: 'As prescribed',
-    sideEffects: '—',
+    pack: p.productSpecifications?.dimensions ? "" : desc.title || "",
+    composition: desc.description || "",
+    uses: desc.metaDescription || desc.description || "",
+    dosage: "As prescribed",
+    sideEffects: "—",
     rx: false, // TODO: Backend has no prescription flag; assume false
-    category: 'otc',
+    category: "otc",
     concern: null,
-    inStock: (p.quantity ?? p.inventory?.quantity ?? 0) > 0 || p.available || p.inventory?.available,
+    inStock:
+      (p.quantity ?? p.inventory?.quantity ?? 0) > 0 ||
+      p.available ||
+      p.inventory?.available,
     fastDelivery: true,
     isLive: true,
   };

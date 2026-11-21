@@ -3,11 +3,13 @@ package com.salesmanager.shop.store.controller.store.facade;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.salesmanager.core.model.content.InputContentFile;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.merchant.MerchantStoreCriteria;
 import com.salesmanager.core.model.reference.language.Language;
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
@@ -76,6 +78,8 @@ public interface StoreFacade {
 	//ReadableMerchantStore create(PersistableMerchantStore store);
 	void create(PersistableMerchantStore store);
 
+	void addNewStore(@Valid StoreFrontResponse store);
+
 	/**
 	 * Updates an existing store
 	 * 
@@ -129,4 +133,6 @@ public interface StoreFacade {
 	List<ReadableMerchantStore> getMerchantStoreNames(MerchantStoreCriteria criteria);
 
 	ReadableMerchantStoreList findNearByStore(Double longitude, Double latitude, Language language);
+
+
 }

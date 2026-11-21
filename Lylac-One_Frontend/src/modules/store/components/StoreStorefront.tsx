@@ -323,7 +323,7 @@ export function StoreStorefront({
     cartQty,
   } = useStoreCart(store);
   const productsQuery = useProducts({ store: store.code, count: 24 });
-  const categoriesQuery = useCategories();
+  const categoriesQuery = useCategories(store.code);
   const products = productsQuery.data?.products || [];
   const categories = categoriesQuery.data || [];
   const saved = savedStores.includes(store.id);

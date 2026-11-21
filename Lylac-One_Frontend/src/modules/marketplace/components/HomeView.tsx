@@ -54,7 +54,7 @@ export function HomeView({
   // LIVE backend data: fetch the real store + its products
   const liveStoreQ = useLiveStore(STORE_CODE);
   const liveProductsQ = useProducts({ count: 12 });
-  const categoriesQ = useCategories();
+  const categoriesQ = useCategories(STORE_CODE);
   const nearbyStoresQ = useNearbyStores(72.51, 23.03);
 
   const pharmacies = useMemo(() => {

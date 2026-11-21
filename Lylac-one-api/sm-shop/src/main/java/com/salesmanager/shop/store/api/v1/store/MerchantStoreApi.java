@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.salesmanager.core.model.storefront.StoreFrontResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -222,6 +223,23 @@ public class MerchantStoreApi {
 
 		
 		storeFacade.create(store);
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = { "/store" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "POST", value = "Creates a new store", notes = "", response = ReadableMerchantStore.class)
+	public void addNewStore(@Valid @RequestBody StoreFrontResponse store) {
+
+//
+//		String authenticatedUser = userFacade.authenticatedUser();
+//		if (authenticatedUser == null) {
+//			throw new UnauthorizedException();
+//		}
+//
+//		userFacade.authorizedGroup(authenticatedUser, Stream.of("SUPERADMIN", "ADMIN_RETAILER").collect(Collectors.toList()));
+
+
+		storeFacade.addNewStore(store);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
