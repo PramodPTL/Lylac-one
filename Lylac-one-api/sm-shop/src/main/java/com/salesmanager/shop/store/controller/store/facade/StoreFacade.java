@@ -14,6 +14,7 @@ import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
+import com.salesmanager.shop.model.store.ReadableMerchantStoreDetails;
 import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 
 /**
@@ -56,6 +57,12 @@ public interface StoreFacade {
 	ReadableMerchantStore getByCode(String code, Language lang);
 
 	ReadableMerchantStore getFullByCode(String code, Language language);
+
+	ReadableMerchantStoreDetails getDetailsByCode(String code, String lang);
+
+	ReadableMerchantStoreDetails getDetailsByCode(String code, Language language);
+
+	ReadableMerchantStoreDetails getAdminDetailsByCode(String code, Language language);
 
 	boolean existByCode(String code);
 

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.salesmanager.core.business.exception.ConversionException;
 import com.salesmanager.core.business.exception.ServiceException;
@@ -40,9 +41,11 @@ import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
+import com.salesmanager.shop.model.store.ReadableMerchantStoreDetails;
 import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 import com.salesmanager.shop.populator.store.PersistableMerchantStorePopulator;
 import com.salesmanager.shop.populator.store.ReadableMerchantStorePopulator;
+import com.salesmanager.shop.populator.store.ReadableMerchantStoreDetailsPopulator;
 import com.salesmanager.shop.store.api.exception.ConversionRuntimeException;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
@@ -76,6 +79,9 @@ public class StoreFacadeImpl implements StoreFacade {
 	
 	@Autowired
 	private ReadableMerchantStorePopulator readableMerchantStorePopulator;
+
+	@Autowired
+	private ReadableMerchantStoreDetailsPopulator readableMerchantStoreDetailsPopulator;
 
 	private static final Logger LOG = LoggerFactory.getLogger(StoreFacadeImpl.class);
 
@@ -126,6 +132,36 @@ public class StoreFacadeImpl implements StoreFacade {
 	public ReadableMerchantStore getFullByCode(String code, Language language) {
 		MerchantStore store = getMerchantStoreByCode(code);
 		return convertMerchantStoreToReadableMerchantStoreWithFullDetails(language, store);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ReadableMerchantStoreDetails getDetailsByCode(String code, String lang) {
+		return getDetailsByCode(code, getLanguage(lang));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ReadableMerchantStoreDetails getDetailsByCode(String code, Language language) {
+		return populateStoreDetails(code, language, false);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ReadableMerchantStoreDetails getAdminDetailsByCode(String code, Language language) {
+		return populateStoreDetails(code, language, true);
+	}
+
+	private ReadableMerchantStoreDetails populateStoreDetails(String code, Language language, boolean includeInactive) {
+		MerchantStore store = getMerchantStoreByCode(code);
+		ReadableMerchantStoreDetails details = new ReadableMerchantStoreDetails();
+		try {
+			readableMerchantStorePopulator.populate(store, details, store, language);
+			readableMerchantStoreDetailsPopulator.populate(store, details, includeInactive);
+		} catch (ConversionException e) {
+			throw new ConversionRuntimeException("Error while populating MerchantStore details " + e.getMessage());
+		}
+		return details;
 	}
 
 	@Override

@@ -44,6 +44,7 @@ import com.salesmanager.shop.model.store.PersistableBrand;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableBrand;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
+import com.salesmanager.shop.model.store.ReadableMerchantStoreDetails;
 import com.salesmanager.shop.model.store.ReadableMerchantStoreList;
 import com.salesmanager.shop.store.api.exception.RestApiException;
 import com.salesmanager.shop.store.api.exception.UnauthorizedException;
@@ -86,6 +87,16 @@ public class MerchantStoreApi {
 		return readable;
 	}
 
+	@GetMapping(value = { "/merchant/store/{code}/details" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "GET", value = "Get public storefront details for a merchant store",
+			notes = "Returns storefront configuration and public store details. Payment credentials are excluded.",
+			response = ReadableMerchantStoreDetails.class)
+	public ReadableMerchantStoreDetails storeDetails(
+			@PathVariable String code,
+			@RequestParam(value = "lang", required = false) String lang) {
+		return storeFacade.getDetailsByCode(code, lang);
+	}
+
 	@GetMapping(value = { "/private/store/{code}" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(httpMethod = "GET", value = "Get merchant store full details", notes = "", response = ReadableMerchantStore.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
@@ -100,6 +111,24 @@ public class MerchantStoreApi {
 
 		userFacade.authorizedGroup(authenticatedUser, Stream.of("SUPERADMIN", "ADMIN_RETAILER").collect(Collectors.toList()));
 		return storeFacade.getFullByCode(code, language);
+	}
+
+	@GetMapping(value = { "/private/store/{code}/details" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(httpMethod = "GET", value = "Get detailed merchant store storefront configuration",
+			notes = "Requires SUPERADMIN or ADMIN_RETAILER authorization. Payment credentials are excluded.",
+			response = ReadableMerchantStoreDetails.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "lang", dataType = "String", defaultValue = "en") })
+	public ReadableMerchantStoreDetails storeDetailsPrivate(
+			@PathVariable String code,
+			@ApiIgnore Language language) {
+		String authenticatedUser = userFacade.authenticatedUser();
+		if (authenticatedUser == null) {
+			throw new UnauthorizedException();
+		}
+
+		userFacade.authorizedGroup(authenticatedUser,
+				Stream.of("SUPERADMIN", "ADMIN_RETAILER").collect(Collectors.toList()));
+		return storeFacade.getAdminDetailsByCode(code, language);
 	}
 
 	@GetMapping(value = { "/private/merchant/{code}/stores" }, produces = MediaType.APPLICATION_JSON_VALUE)
